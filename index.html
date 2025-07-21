@@ -1,0 +1,1676 @@
+
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة إدارة عمليات التدريب - جامعة نايف العربية للعلوم الأمنية</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2f6363',
+                        secondary: '#c3ac74',
+                        'primary-dark': '#1e4040',
+                        'secondary-light': '#d4c088'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            font-family: 'Cairo', sans-serif;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1000;
+            backdrop-filter: blur(4px);
+        }
+        
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .slide-up {
+            animation: slideUp 0.4s ease-out;
+        }
+        
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.6s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .hover-lift {
+            transition: all 0.3s ease;
+        }
+        
+        .hover-lift:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(47, 99, 99, 0.15);
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #2f6363 0%, #1e4040 100%);
+        }
+        
+        .secondary-gradient {
+            background: linear-gradient(135deg, #c3ac74 0%, #d4c088 100%);
+        }
+        
+        .icon-bounce {
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+        
+        .transaction-code {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <header class="gradient-bg text-white py-8 shadow-2xl relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute top-0 left-0 w-64 h-64 bg-white rounded-full -translate-x-32 -translate-y-32"></div>
+            <div class="absolute bottom-0 right-0 w-48 h-48 bg-white rounded-full translate-x-24 translate-y-24"></div>
+        </div>
+        
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="flex items-center justify-center mb-6">
+                <div class="bg-white bg-opacity-20 p-4 rounded-2xl backdrop-blur-sm">
+                    <svg class="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2L2 7v10c0 5.55 3.84 9.74 9 11 5.16-1.26 9-5.45 9-11V7l-10-5z"/>
+                        <path d="M10 17l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/>
+                    </svg>
+                </div>
+            </div>
+            
+            <div class="text-center">
+                <h1 class="text-3xl md:text-4xl font-bold mb-3">منصة إدارة عمليات التدريب</h1>
+                <p class="text-xl mb-2 opacity-90">جامعة نايف العربية للعلوم الأمنية</p>
+                <p class="text-sm opacity-75">نظام إلكتروني متكامل لإدارة النماذج والمعاملات التدريبية</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 py-12">
+        <!-- Quick Stats -->
+        <div class="grid md:grid-cols-3 gap-6 mb-12">
+            <div class="bg-white rounded-2xl p-6 shadow-lg border-t-4 border-primary">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-600 text-sm">النماذج المتاحة</p>
+                        <p class="text-2xl font-bold text-primary" id="totalForms">0</p>
+                    </div>
+                    <div class="bg-primary bg-opacity-10 p-3 rounded-xl">
+                        <svg class="w-8 h-8 text-primary" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-2xl p-6 shadow-lg border-t-4 border-secondary">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-600 text-sm">المعاملات المرسلة</p>
+                        <p class="text-2xl font-bold text-secondary" id="sentCount">0</p>
+                    </div>
+                    <div class="bg-secondary bg-opacity-10 p-3 rounded-xl">
+                        <svg class="w-8 h-8 text-secondary" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M2,21L23,12L2,3V10L17,12L2,14V21Z"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-2xl p-6 shadow-lg border-t-4 border-green-500">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-600 text-sm">آخر رقم معاملة</p>
+                        <p class="text-lg font-bold text-green-600 transaction-code" id="lastTransaction">OD-2025-001</p>
+                    </div>
+                    <div class="bg-green-100 p-3 rounded-xl">
+                        <svg class="w-8 h-8 text-green-600" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Forms Grid -->
+        <div class="mb-12">
+            <div class="flex items-center justify-between mb-8">
+                <h2 class="text-2xl font-bold text-gray-800 flex items-center gap-3">
+                    <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+                        <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M19,3H5C3.9,3 3,3.9 3,5V19C3,20.1 3.9,21 5,21H19C20.1,21 21,20.1 21,19V5C21,3.9 20.1,3 19,3M19,19H5V5H19V19Z"/>
+                        </svg>
+                    </div>
+                    النماذج المتاحة
+                </h2>
+                
+                <button onclick="openAddFormModal()" class="bg-secondary hover:bg-secondary-light text-white px-6 py-3 rounded-xl font-medium transition-all duration-300 flex items-center gap-2 shadow-lg hover:shadow-xl">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"/>
+                    </svg>
+                    إضافة نموذج جديد
+                </button>
+            </div>
+            
+            <div id="formsGrid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Forms will be rendered here -->
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="grid md:grid-cols-2 gap-8 mb-12">
+            <button onclick="showArchive()" class="bg-white hover:bg-gray-50 border-2 border-primary text-primary font-bold py-8 px-6 rounded-2xl transition-all duration-300 hover-lift group">
+                <div class="flex flex-col items-center space-y-4">
+                    <div class="bg-primary bg-opacity-10 p-6 rounded-2xl group-hover:bg-opacity-20 transition-all duration-300">
+                        <svg class="w-12 h-12 text-primary" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M3,3H21V5H21V19A2,2 0 0,1 19,21H5A2,2 0 0,1 3,19V5H3V3M5,5V19H19V5H5M7,7H17V9H7V7M7,11H17V13H7V11M7,15H14V17H7V15Z"/>
+                        </svg>
+                    </div>
+                    <div class="text-center">
+                        <h3 class="text-xl font-bold mb-2">أرشيف المعاملات</h3>
+                        <p class="text-gray-600 text-sm">عرض وإدارة جميع المعاملات المرسلة</p>
+                    </div>
+                </div>
+            </button>
+            
+            <button onclick="showPreviousForms()" class="bg-white hover:bg-gray-50 border-2 border-secondary text-secondary font-bold py-8 px-6 rounded-2xl transition-all duration-300 hover-lift group">
+                <div class="flex flex-col items-center space-y-4">
+                    <div class="bg-secondary bg-opacity-10 p-6 rounded-2xl group-hover:bg-opacity-20 transition-all duration-300">
+                        <svg class="w-12 h-12 text-secondary" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M13,9H18.5L13,3.5V9M6,2H14L20,8V20A2,2 0 0,1 18,22H6C4.89,22 4,21.1 4,20V4C4,2.89 4.89,2 6,2M6,20H15L18,20V10H12V4H6V20Z"/>
+                        </svg>
+                    </div>
+                    <div class="text-center">
+                        <h3 class="text-xl font-bold mb-2">النماذج المرسلة</h3>
+                        <p class="text-gray-600 text-sm">مراجعة النماذج التي تم إرسالها مؤخراً</p>
+                    </div>
+                </div>
+            </button>
+        </div>
+
+        <!-- Previous Forms Section -->
+        <div id="previousForms" class="hidden bg-white rounded-2xl shadow-xl p-8 mb-8">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-8 h-8 bg-secondary rounded-lg flex items-center justify-center">
+                    <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M13,9H18.5L13,3.5V9M6,2H14L20,8V20A2,2 0 0,1 18,22H6C4.89,22 4,21.1 4,20V4C4,2.89 4.89,2 6,2M6,20H15L18,20V10H12V4H6V20Z"/>
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-bold text-gray-800">النماذج المرسلة مؤخراً</h3>
+            </div>
+            <div id="formsList" class="space-y-4">
+                <!-- Previous forms will be displayed here -->
+            </div>
+        </div>
+
+        <!-- Archive Section -->
+        <div id="archiveSection" class="hidden bg-white rounded-2xl shadow-xl p-8 mb-8">
+            <div class="flex items-center justify-between mb-8">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+                        <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M3,3H21V5H21V19A2,2 0 0,1 19,21H5A2,2 0 0,1 3,19V5H3V3M5,5V19H19V5H5M7,7H17V9H7V7M7,11H17V13H7V11M7,15H14V17H7V15Z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800">أرشيف المعاملات</h3>
+                </div>
+                
+                <button onclick="exportArchive()" class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl font-medium transition-all duration-300 flex items-center gap-2 shadow-lg">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+                    </svg>
+                    تصدير Excel
+                </button>
+            </div>
+            
+            <!-- Filters -->
+            <div class="bg-gray-50 p-6 rounded-xl mb-8">
+                <h4 class="font-bold text-gray-700 mb-4 flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M14,12V19.88C14.04,20.18 13.94,20.5 13.71,20.71C13.32,21.1 12.69,21.1 12.3,20.71L10.29,18.7C10.06,18.47 9.96,18.16 10,17.87V12H9.97L4.21,4.62C3.87,4.19 3.95,3.56 4.38,3.22C4.57,3.08 4.78,3 5,3V3H19V3C19.22,3 19.43,3.08 19.62,3.22C20.05,3.56 20.13,4.19 19.79,4.62L14.03,12H14Z"/>
+                    </svg>
+                    فلترة النتائج
+                </h4>
+                <div class="grid md:grid-cols-4 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">من تاريخ</label>
+                        <input type="date" id="filterFromDate" class="w-full p-3 border border-gray-300 rounded-lg focus:border-primary focus:outline-none transition-colors">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">إلى تاريخ</label>
+                        <input type="date" id="filterToDate" class="w-full p-3 border border-gray-300 rounded-lg focus:border-primary focus:outline-none transition-colors">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">نوع النموذج</label>
+                        <select id="filterFormType" class="w-full p-3 border border-gray-300 rounded-lg focus:border-primary focus:outline-none transition-colors">
+                            <option value="">جميع النماذج</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">البحث</label>
+                        <input type="text" id="filterSearch" placeholder="البحث في المعاملات..." class="w-full p-3 border border-gray-300 rounded-lg focus:border-primary focus:outline-none transition-colors">
+                    </div>
+                </div>
+                <div class="flex gap-3 mt-6">
+                    <button onclick="applyFilters()" class="bg-primary hover:bg-primary-dark text-white px-6 py-3 rounded-lg font-medium transition-all duration-300 flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z"/>
+                        </svg>
+                        تطبيق الفلترة
+                    </button>
+                    <button onclick="clearFilters()" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg font-medium transition-all duration-300">
+                        مسح الفلاتر
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Archive Results -->
+            <div id="archiveResults" class="space-y-4">
+                <!-- Archive results will be displayed here -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="gradient-bg text-white py-12 mt-16">
+        <div class="container mx-auto px-6">
+            <div class="text-center">
+                <div class="flex items-center justify-center mb-6">
+                    <div class="bg-white bg-opacity-20 p-4 rounded-2xl backdrop-blur-sm">
+                        <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2L2 7v10c0 5.55 3.84 9.74 9 11 5.16-1.26 9-5.45 9-11V7l-10-5z"/>
+                        </svg>
+                    </div>
+                </div>
+                <h4 class="text-2xl font-bold mb-3">منصة إدارة عمليات التدريب</h4>
+                <p class="text-lg mb-2 opacity-90">جامعة نايف العربية للعلوم الأمنية</p>
+                <p class="text-sm opacity-75 mb-6">od@nauss.edu.sa</p>
+                
+                <div class="border-t border-white border-opacity-20 pt-6">
+                    <p class="text-sm opacity-75">© 2025 جميع الحقوق محفوظة - جامعة نايف العربية للعلوم الأمنية</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Form Modal -->
+    <div id="formModal" class="modal">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-4xl mx-4 max-h-[90vh] overflow-y-auto slide-up">
+            <div class="gradient-bg text-white p-6 rounded-t-2xl">
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center gap-3">
+                        <div class="bg-white bg-opacity-20 p-2 rounded-lg">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+                            </svg>
+                        </div>
+                        <h2 id="modalTitle" class="text-2xl font-bold"></h2>
+                    </div>
+                    <button onclick="closeForm()" class="text-white hover:text-gray-200 text-3xl font-light transition-colors">×</button>
+                </div>
+            </div>
+            
+            <form id="trainingForm" class="p-8 space-y-6">
+                <!-- Dynamic form content will be generated here -->
+                
+                <!-- Email Recipients Section -->
+                <div class="border-t pt-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <label class="block text-gray-700 font-bold text-lg flex items-center gap-2">
+                            <svg class="w-5 h-5 text-primary" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M20,8L12,13L4,8V6L12,11L20,6M20,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6C22,4.89 21.11,4 20,4Z"/>
+                            </svg>
+                            المرسل إليهم
+                        </label>
+                        <button type="button" onclick="addEmailRecipient()" class="bg-secondary hover:bg-secondary-light text-white px-4 py-2 rounded-lg font-medium transition-all duration-300 flex items-center gap-2">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"/>
+                            </svg>
+                            إضافة إيميل
+                        </button>
+                    </div>
+                    
+                    <div id="emailRecipientsContainer" class="space-y-3">
+                        <div class="email-recipient bg-gray-50 p-4 rounded-lg border-2 border-primary border-opacity-20">
+                            <div class="flex items-center gap-3">
+                                <div class="flex-1">
+                                    <input type="email" value="od@nauss.edu.sa" class="recipient-email w-full p-3 border border-gray-300 rounded-lg focus:border-primary focus:outline-none transition-colors" readonly>
+                                </div>
+                                <div class="bg-primary text-white px-3 py-2 rounded-lg text-sm font-medium">
+                                    الإيميل الرئيسي
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Attachments Section -->
+                <div class="border-t pt-6">
+                    <label class="block text-gray-700 font-bold mb-4 text-lg flex items-center gap-2">
+                        <svg class="w-5 h-5 text-primary" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M16.5,6V17.5A4,4 0 0,1 12.5,21.5A4,4 0 0,1 8.5,17.5V5A2.5,2.5 0 0,1 11,2.5A2.5,2.5 0 0,1 13.5,5V15.5A1,1 0 0,1 12.5,16.5A1,1 0 0,1 11.5,15.5V6H10V15.5A2.5,2.5 0 0,0 12.5,18A2.5,2.5 0 0,0 15,15.5V5A4,4 0 0,0 11,1A4,4 0 0,0 7,5V17.5A5.5,5.5 0 0,0 12.5,23A5.5,5.5 0 0,0 18,17.5V6H16.5Z"/>
+                        </svg>
+                        المرفقات (اختياري)
+                    </label>
+                    <input type="file" id="attachments" multiple class="w-full p-4 border-2 border-dashed border-gray-300 rounded-lg focus:border-primary focus:outline-none transition-colors hover:border-gray-400" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.xlsx,.xls">
+                    <p class="text-sm text-gray-500 mt-2 flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M13,9H18.5L13,3.5V9M6,2H14L20,8V20A2,2 0 0,1 18,22H6C4.89,22 4,21.1 4,20V4C4,2.89 4.89,2 6,2M6,20H15L18,20V10H12V4H6V20Z"/>
+                        </svg>
+                        يمكنك إرفاق ملفات متعددة (PDF, Word, Excel, صور)
+                    </p>
+                    <div id="attachmentsList" class="mt-4 space-y-2"></div>
+                </div>
+                
+                <!-- Transaction Code Display -->
+                <div class="bg-gradient-to-r from-green-50 to-blue-50 p-6 rounded-xl border-2 border-green-200">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="bg-green-500 p-2 rounded-lg">
+                                <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-gray-600 text-sm">رقم المعاملة المتوقع</p>
+                                <p class="text-2xl font-bold text-green-600 transaction-code" id="nextTransactionCode">OD-2025-001</p>
+                            </div>
+                        </div>
+                        <div class="text-left">
+                            <p class="text-gray-500 text-xs">سيتم تعيين الرقم عند الإرسال</p>
+                            <p class="text-gray-400 text-xs" id="currentDateTime"></p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex gap-4 pt-6">
+                    <button type="submit" class="flex-1 gradient-bg hover:bg-primary-dark text-white font-bold py-4 px-8 rounded-xl transition-all duration-300 flex items-center justify-center gap-3 shadow-lg hover:shadow-xl">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M2,21L23,12L2,3V10L17,12L2,14V21Z"/>
+                        </svg>
+                        إنشاء وإرسال الإيميل
+                    </button>
+                    <button type="button" onclick="closeForm()" class="px-8 py-4 border-2 border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-all duration-300 font-medium">
+                        إلغاء
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add New Form Modal -->
+    <div id="addFormModal" class="modal">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-5xl mx-4 max-h-[90vh] overflow-y-auto slide-up">
+            <div class="secondary-gradient text-white p-6 rounded-t-2xl">
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center gap-3">
+                        <div class="bg-white bg-opacity-20 p-2 rounded-lg">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"/>
+                            </svg>
+                        </div>
+                        <h2 class="text-2xl font-bold">إضافة نموذج جديد</h2>
+                    </div>
+                    <button onclick="closeAddFormModal()" class="text-white hover:text-gray-200 text-3xl font-light transition-colors">×</button>
+                </div>
+            </div>
+            
+            <form id="newFormTemplate" class="p-8 space-y-6">
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-gray-700 font-bold mb-3">اسم النموذج</label>
+                        <input type="text" id="newFormName" class="w-full p-4 border border-gray-300 rounded-lg focus:border-primary focus:outline-none transition-colors" required>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-bold mb-3">لون النموذج</label>
+                        <select id="newFormColor" class="w-full p-4 border border-gray-300 rounded-lg focus:border-primary focus:outline-none transition-colors" required>
+                            <option value="">اختر اللون</option>
+                            <option value="primary">أخضر داكن (الأساسي)</option>
+                            <option value="secondary">ذهبي (الثانوي)</option>
+                            <option value="blue">أزرق</option>
+                            <option value="red">أحمر</option>
+                            <option value="purple">بنفسجي</option>
+                            <option value="indigo">نيلي</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-gray-700 font-bold mb-3">وصف النموذج</label>
+                        <textarea id="newFormDescription" rows="4" class="w-full p-4 border border-gray-300 rounded-lg focus:border-primary focus:outline-none transition-colors" required></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-bold mb-3">الجهة المرسل إليها (الإيميل الرئيسي)</label>
+                        <input type="email" id="newFormRecipient" class="w-full p-4 border border-gray-300 rounded-lg focus:border-primary focus:outline-none transition-colors" placeholder="example@nauss.edu.sa" required>
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-gray-700 font-bold mb-3">موضوع الإيميل</label>
+                    <input type="text" id="newFormSubject" class="w-full p-4 border border-gray-300 rounded-lg focus:border-primary focus:outline-none transition-colors" required>
+                </div>
+                
+                <div>
+                    <label class="block text-gray-700 font-bold mb-3">محتوى الإيميل</label>
+                    <textarea id="newFormContent" rows="5" class="w-full p-4 border border-gray-300 rounded-lg focus:border-primary focus:outline-none transition-colors" placeholder="اكتب محتوى الإيميل هنا..." required></textarea>
+                </div>
+                
+                <div>
+                    <label class="block text-gray-700 font-bold mb-3">التعليمات</label>
+                    <textarea id="newFormInstructions" rows="4" class="w-full p-4 border border-gray-300 rounded-lg focus:border-primary focus:outline-none transition-colors" placeholder="• النقطة الأولى&#10;• النقطة الثانية&#10;• النقطة الثالثة" required></textarea>
+                </div>
+                
+                <!-- Custom Fields Section -->
+                <div class="border-t pt-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h4 class="text-xl font-bold text-gray-800 flex items-center gap-2">
+                            <svg class="w-6 h-6 text-primary" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M19,3H5C3.9,3 3,3.9 3,5V19C3,20.1 3.9,21 5,21H19C20.1,21 21,20.1 21,19V5C21,3.9 20.1,3 19,3M19,19H5V5H19V19Z"/>
+                            </svg>
+                            حقول النموذج المخصصة
+                        </h4>
+                        <button type="button" onclick="addCustomField()" class="bg-primary hover:bg-primary-dark text-white px-6 py-3 rounded-lg font-medium transition-all duration-300 flex items-center gap-2">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"/>
+                            </svg>
+                            إضافة حقل
+                        </button>
+                    </div>
+                    <div id="customFieldsContainer" class="space-y-4">
+                        <!-- Default fields will be added here -->
+                    </div>
+                </div>
+                
+                <div class="flex gap-4 pt-6">
+                    <button type="submit" class="flex-1 secondary-gradient hover:bg-secondary-light text-white font-bold py-4 px-8 rounded-xl transition-all duration-300 flex items-center justify-center gap-3 shadow-lg hover:shadow-xl">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"/>
+                        </svg>
+                        إضافة النموذج
+                    </button>
+                    <button type="button" onclick="closeAddFormModal()" class="px-8 py-4 border-2 border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-all duration-300 font-medium">
+                        إلغاء
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Email Preview Modal -->
+    <div id="emailModal" class="modal">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-5xl mx-4 max-h-[90vh] overflow-y-auto slide-up">
+            <div class="gradient-bg text-white p-6 rounded-t-2xl">
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center gap-3">
+                        <div class="bg-white bg-opacity-20 p-2 rounded-lg">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M20,8L12,13L4,8V6L12,11L20,6M20,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6C22,4.89 21.11,4 20,4Z"/>
+                            </svg>
+                        </div>
+                        <h2 class="text-2xl font-bold">معاينة الإيميل</h2>
+                    </div>
+                    <button onclick="closeEmailPreview()" class="text-white hover:text-gray-200 text-3xl font-light transition-colors">×</button>
+                </div>
+            </div>
+            
+            <div class="p-8">
+                <div id="emailContent" class="bg-gray-50 p-8 rounded-xl mb-8 text-right border-2 border-gray-200" style="font-family: 'Cairo', sans-serif; line-height: 1.8;">
+                    <!-- Email content will be generated here -->
+                </div>
+                
+                <div class="flex gap-4">
+                    <button onclick="sendEmail()" class="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-8 rounded-xl transition-all duration-300 flex items-center justify-center gap-3 shadow-lg hover:shadow-xl">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M2,21L23,12L2,3V10L17,12L2,14V21Z"/>
+                        </svg>
+                        إرسال الإيميل
+                    </button>
+                    <button onclick="closeEmailPreview()" class="px-8 py-4 border-2 border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-all duration-300 font-medium">
+                        تعديل البيانات
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentFormType = '';
+        let sentForms = JSON.parse(localStorage.getItem('sentForms')) || [];
+        let customForms = JSON.parse(localStorage.getItem('customForms')) || [];
+        let selectedAttachments = [];
+        let transactionCounter = parseInt(localStorage.getItem('transactionCounter')) || 1;
+
+        // No default forms - user will add their own
+        const defaultForms = [];
+
+        // Color mappings with new colors
+        const colorClasses = {
+            primary: { 
+                bg: 'bg-[#2f6363]', 
+                hover: 'hover:bg-[#1e4040]', 
+                border: 'border-[#2f6363]',
+                text: 'text-[#2f6363]'
+            },
+            secondary: { 
+                bg: 'bg-[#c3ac74]', 
+                hover: 'hover:bg-[#b09960]', 
+                border: 'border-[#c3ac74]',
+                text: 'text-[#c3ac74]'
+            },
+            blue: { 
+                bg: 'bg-blue-600', 
+                hover: 'hover:bg-blue-700', 
+                border: 'border-blue-600',
+                text: 'text-blue-600'
+            },
+            red: { 
+                bg: 'bg-red-600', 
+                hover: 'hover:bg-red-700', 
+                border: 'border-red-600',
+                text: 'text-red-600'
+            },
+            purple: { 
+                bg: 'bg-purple-600', 
+                hover: 'hover:bg-purple-700', 
+                border: 'border-purple-600',
+                text: 'text-purple-600'
+            },
+            indigo: { 
+                bg: 'bg-indigo-600', 
+                hover: 'hover:bg-indigo-700', 
+                border: 'border-indigo-600',
+                text: 'text-indigo-600'
+            }
+        };
+
+        // Icon mappings
+        const iconMappings = {
+            security: `<path d="M12 2L2 7v10c0 5.55 3.84 9.74 9 11 5.16-1.26 9-5.45 9-11V7l-10-5z"/><path d="M10 17l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/>`,
+            protocol: `<path d="M12,2A3,3 0 0,1 15,5V7H19A1,1 0 0,1 20,8V20A1,1 0 0,1 19,21H5A1,1 0 0,1 4,20V8A1,1 0 0,1 5,7H9V5A3,3 0 0,1 12,2M12,4A1,1 0 0,0 11,5V7H13V5A1,1 0 0,0 12,4Z"/>`,
+            support: `<path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"/>`,
+            default: `<path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>`
+        };
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            renderForms();
+            setupAttachmentHandler();
+            populateFilterOptions();
+            updateStats();
+            updateDateTime();
+            updateNextTransactionCode();
+            
+            // Update date/time every minute
+            setInterval(updateDateTime, 60000);
+        });
+
+        function generateTransactionCode() {
+            const code = `OD-2025-${String(transactionCounter).padStart(3, '0')}`;
+            transactionCounter++;
+            localStorage.setItem('transactionCounter', transactionCounter);
+            return code;
+        }
+
+        function updateNextTransactionCode() {
+            const nextCode = `OD-2025-${String(transactionCounter).padStart(3, '0')}`;
+            const element = document.getElementById('nextTransactionCode');
+            if (element) {
+                element.textContent = nextCode;
+            }
+        }
+
+        function updateDateTime() {
+            const now = new Date();
+            const element = document.getElementById('currentDateTime');
+            if (element) {
+                element.textContent = now.toLocaleString('ar-SA', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+            }
+        }
+
+        function updateStats() {
+            const totalForms = getAllForms().length;
+            const sentCount = sentForms.length;
+            const lastTransaction = sentForms.length > 0 ? sentForms[0].transactionCode : 'OD-2025-001';
+            
+            document.getElementById('totalForms').textContent = totalForms;
+            document.getElementById('sentCount').textContent = sentCount;
+            document.getElementById('lastTransaction').textContent = lastTransaction;
+        }
+
+        function populateFilterOptions() {
+            const filterFormType = document.getElementById('filterFormType');
+            const allForms = getAllForms();
+            
+            filterFormType.innerHTML = '<option value="">جميع النماذج</option>';
+            allForms.forEach(form => {
+                filterFormType.innerHTML += `<option value="${form.id}">${form.name}</option>`;
+            });
+        }
+
+        function getAllForms() {
+            return [...defaultForms, ...customForms];
+        }
+
+        function renderForms() {
+            const formsGrid = document.getElementById('formsGrid');
+            const allForms = getAllForms();
+            
+            if (allForms.length === 0) {
+                formsGrid.innerHTML = `
+                    <div class="col-span-full text-center py-16">
+                        <div class="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                            <svg class="w-12 h-12 text-gray-400" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-600 mb-3">لا توجد نماذج متاحة</h3>
+                        <p class="text-gray-500 mb-6">ابدأ بإضافة نموذج جديد لإدارة عمليات التدريب</p>
+                        <button onclick="openAddFormModal()" class="bg-secondary hover:bg-secondary-light text-white px-8 py-4 rounded-xl font-medium transition-all duration-300 flex items-center gap-3 mx-auto shadow-lg hover:shadow-xl">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"/>
+                            </svg>
+                            إضافة أول نموذج
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+            
+            formsGrid.innerHTML = allForms.map(form => {
+                const colors = colorClasses[form.color] || colorClasses.primary;
+                const icon = iconMappings[form.icon] || iconMappings.default;
+                
+                return `
+                    <div class="bg-white rounded-2xl shadow-lg p-8 hover-lift fade-in border-t-4 ${colors.border} group relative overflow-hidden">
+                        <div class="absolute top-0 left-0 w-full h-1 ${colors.bg} opacity-30"></div>
+                        
+                        <div class="text-center mb-6">
+                            <div class="mx-auto w-20 h-20 ${colors.bg} text-white rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg icon-bounce">
+                                <svg class="w-10 h-10" fill="currentColor" viewBox="0 0 24 24">
+                                    ${icon}
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800 mb-3">${form.name}</h3>
+                            <p class="text-gray-600 text-sm leading-relaxed">${form.description}</p>
+                        </div>
+                        
+                        <div class="space-y-3">
+                            <button onclick="openForm('${form.id}')" class="w-full ${colors.bg} ${colors.hover} text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
+                                <div class="flex items-center justify-center space-x-2 space-x-reverse">
+                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M2,21L23,12L2,3V10L17,12L2,14V21Z"/>
+                                    </svg>
+                                    <span>استخدم النموذج</span>
+                                </div>
+                            </button>
+                            <div class="grid grid-cols-2 gap-2">
+                                <button onclick="editForm('${form.id}')" class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-3 px-4 rounded-xl transition-all duration-300 flex items-center justify-center space-x-2 space-x-reverse" title="تعديل النموذج">
+                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z"/>
+                                    </svg>
+                                    <span>تعديل</span>
+                                </button>
+                                <button onclick="deleteForm('${form.id}')" class="bg-red-500 hover:bg-red-600 text-white font-medium py-3 px-4 rounded-xl transition-all duration-300 flex items-center justify-center space-x-2 space-x-reverse" title="حذف النموذج">
+                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                        <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                                    </svg>
+                                    <span>حذف</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function setupAttachmentHandler() {
+            const attachmentInput = document.getElementById('attachments');
+            const attachmentsList = document.getElementById('attachmentsList');
+            
+            if (attachmentInput) {
+                attachmentInput.addEventListener('change', function(e) {
+                    selectedAttachments = Array.from(e.target.files);
+                    displayAttachments();
+                });
+            }
+        }
+
+        function displayAttachments() {
+            const attachmentsList = document.getElementById('attachmentsList');
+            
+            if (!attachmentsList || selectedAttachments.length === 0) {
+                if (attachmentsList) attachmentsList.innerHTML = '';
+                return;
+            }
+            
+            attachmentsList.innerHTML = selectedAttachments.map((file, index) => `
+                <div class="flex items-center justify-between bg-blue-50 p-3 rounded-lg border border-blue-200">
+                    <div class="flex items-center gap-3">
+                        <svg class="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M16.5,6V17.5A4,4 0 0,1 12.5,21.5A4,4 0 0,1 8.5,17.5V5A2.5,2.5 0 0,1 11,2.5A2.5,2.5 0 0,1 13.5,5V15.5A1,1 0 0,1 12.5,16.5A1,1 0 0,1 11.5,15.5V6H10V15.5A2.5,2.5 0 0,0 12.5,18A2.5,2.5 0 0,0 15,15.5V5A4,4 0 0,0 11,1A4,4 0 0,0 7,5V17.5A5.5,5.5 0 0,0 12.5,23A5.5,5.5 0 0,0 18,17.5V6H16.5Z"/>
+                        </svg>
+                        <span class="text-sm text-blue-800 font-medium">${file.name}</span>
+                        <span class="text-xs text-blue-600 bg-blue-100 px-2 py-1 rounded">${(file.size / 1024).toFixed(1)} KB</span>
+                    </div>
+                    <button onclick="removeAttachment(${index})" class="text-red-500 hover:text-red-700 p-1 rounded transition-colors">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                        </svg>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function removeAttachment(index) {
+            selectedAttachments.splice(index, 1);
+            displayAttachments();
+            
+            // Update file input
+            const dt = new DataTransfer();
+            selectedAttachments.forEach(file => dt.items.add(file));
+            const attachmentInput = document.getElementById('attachments');
+            if (attachmentInput) {
+                attachmentInput.files = dt.files;
+            }
+        }
+
+        function addEmailRecipient() {
+            const container = document.getElementById('emailRecipientsContainer');
+            const recipientHtml = `
+                <div class="email-recipient bg-gray-50 p-4 rounded-lg border border-gray-200">
+                    <div class="flex items-center gap-3">
+                        <div class="flex-1">
+                            <input type="email" class="recipient-email w-full p-3 border border-gray-300 rounded-lg focus:border-primary focus:outline-none transition-colors" placeholder="example@nauss.edu.sa" required>
+                        </div>
+                        <button type="button" onclick="removeEmailRecipient(this)" class="bg-red-500 hover:bg-red-600 text-white p-2 rounded-lg transition-all duration-300">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            container.insertAdjacentHTML('beforeend', recipientHtml);
+        }
+
+        function removeEmailRecipient(button) {
+            button.closest('.email-recipient').remove();
+        }
+
+        function openForm(formType) {
+            currentFormType = formType;
+            const form = getAllForms().find(f => f.id === formType);
+            document.getElementById('modalTitle').textContent = form.name;
+            
+            // Generate dynamic form based on custom fields
+            generateDynamicForm(form);
+            
+            document.getElementById('formModal').classList.add('active');
+            selectedAttachments = [];
+            displayAttachments();
+            updateNextTransactionCode();
+            updateDateTime();
+        }
+
+        function generateDynamicForm(form) {
+            const formContainer = document.getElementById('trainingForm');
+            const customFields = form.customFields || [];
+            
+            // Clear existing dynamic content
+            const existingDynamicContent = formContainer.querySelector('.dynamic-fields');
+            if (existingDynamicContent) {
+                existingDynamicContent.remove();
+            }
+            
+            // Generate fields based on customFields
+            let fieldsHtml = '<div class="dynamic-fields space-y-6">';
+            
+            for (let i = 0; i < customFields.length; i += 2) {
+                fieldsHtml += '<div class="grid md:grid-cols-2 gap-6">';
+                
+                for (let j = i; j < Math.min(i + 2, customFields.length); j++) {
+                    const field = customFields[j];
+                    fieldsHtml += generateFieldHtml(field, j);
+                }
+                
+                fieldsHtml += '</div>';
+            }
+            
+            fieldsHtml += '</div>';
+            
+            // Insert dynamic fields at the beginning of the form
+            formContainer.insertAdjacentHTML('afterbegin', fieldsHtml);
+            
+            // Re-setup attachment handler
+            setupAttachmentHandler();
+        }
+
+        function generateFieldHtml(field, index) {
+            const fieldId = `field_${index}`;
+            const required = field.required ? 'required' : '';
+            
+            let inputHtml = '';
+            
+            switch (field.type) {
+                case 'text':
+                    inputHtml = `<input type="text" id="${fieldId}" class="w-full p-4 border border-gray-300 rounded-lg focus:border-primary focus:outline-none transition-colors" ${required}>`;
+                    break;
+                case 'number':
+                    inputHtml = `<input type="number" id="${fieldId}" class="w-full p-4 border border-gray-300 rounded-lg focus:border-primary focus:outline-none transition-colors" ${required}>`;
+                    break;
+                case 'date':
+                    inputHtml = `<input type="date" id="${fieldId}" class="w-full p-4 border border-gray-300 rounded-lg focus:border-primary focus:outline-none transition-colors" ${required}>`;
+                    break;
+                case 'select':
+                    const options = field.options || [];
+                    inputHtml = `
+                        <select id="${fieldId}" class="w-full p-4 border border-gray-300 rounded-lg focus:border-primary focus:outline-none transition-colors" ${required}>
+                            <option value="">اختر ${field.name}</option>
+                            ${options.map(option => `<option value="${option}">${option}</option>`).join('')}
+                        </select>
+                    `;
+                    break;
+                case 'textarea':
+                    inputHtml = `<textarea id="${fieldId}" rows="4" class="w-full p-4 border border-gray-300 rounded-lg focus:border-primary focus:outline-none transition-colors" ${required}></textarea>`;
+                    break;
+                default:
+                    inputHtml = `<input type="text" id="${fieldId}" class="w-full p-4 border border-gray-300 rounded-lg focus:border-primary focus:outline-none transition-colors" ${required}>`;
+            }
+            
+            return `
+                <div>
+                    <label class="block text-gray-700 font-bold mb-3">${field.name}</label>
+                    ${inputHtml}
+                </div>
+            `;
+        }
+
+        function addCustomField() {
+            const container = document.getElementById('customFieldsContainer');
+            
+            const fieldHtml = `
+                <div class="custom-field bg-gray-50 p-4 rounded-lg border border-gray-200">
+                    <div class="grid md:grid-cols-4 gap-4 items-end">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">اسم الحقل</label>
+                            <input type="text" class="field-name w-full p-3 border border-gray-300 rounded-lg focus:border-primary focus:outline-none transition-colors">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">نوع الحقل</label>
+                            <select class="field-type w-full p-3 border border-gray-300 rounded-lg focus:border-primary focus:outline-none transition-colors" onchange="toggleFieldOptions(this)">
+                                <option value="text">نص</option>
+                                <option value="number">رقم</option>
+                                <option value="date">تاريخ</option>
+                                <option value="select">قائمة اختيار</option>
+                                <option value="textarea">نص طويل</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">مطلوب؟</label>
+                            <select class="field-required w-full p-3 border border-gray-300 rounded-lg focus:border-primary focus:outline-none transition-colors">
+                                <option value="true">نعم</option>
+                                <option value="false">لا</option>
+                            </select>
+                        </div>
+                        <button type="button" onclick="removeCustomField(this)" class="bg-red-500 hover:bg-red-600 text-white px-4 py-3 rounded-lg transition-all duration-300 font-medium">
+                            حذف
+                        </button>
+                    </div>
+                    <div class="field-options mt-4 hidden">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">خيارات القائمة (كل خيار في سطر)</label>
+                        <textarea class="field-options-text w-full p-3 border border-gray-300 rounded-lg focus:border-primary focus:outline-none transition-colors" rows="3"></textarea>
+                    </div>
+                </div>
+            `;
+            
+            container.insertAdjacentHTML('beforeend', fieldHtml);
+        }
+
+        function removeCustomField(button) {
+            button.closest('.custom-field').remove();
+        }
+
+        function toggleFieldOptions(select) {
+            const fieldOptions = select.closest('.custom-field').querySelector('.field-options');
+            if (select.value === 'select') {
+                fieldOptions.classList.remove('hidden');
+            } else {
+                fieldOptions.classList.add('hidden');
+            }
+        }
+
+        function closeForm() {
+            document.getElementById('formModal').classList.remove('active');
+        }
+
+        function closeEmailPreview() {
+            document.getElementById('emailModal').classList.remove('active');
+        }
+
+        function openAddFormModal() {
+            // Reset form title and button text
+            document.querySelector('#addFormModal .text-2xl').textContent = 'إضافة نموذج جديد';
+            document.querySelector('#addFormModal button[type="submit"]').innerHTML = `
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"/>
+                </svg>
+                إضافة النموذج
+            `;
+            
+            // Clear editing form ID
+            window.editingFormId = null;
+            
+            document.getElementById('addFormModal').classList.add('active');
+            document.getElementById('newFormTemplate').reset();
+            
+            // Add default field
+            const container = document.getElementById('customFieldsContainer');
+            container.innerHTML = '';
+            addCustomField();
+        }
+
+        function closeAddFormModal() {
+            document.getElementById('addFormModal').classList.remove('active');
+        }
+
+        function editForm(formId) {
+            const form = customForms.find(f => f.id === formId);
+            if (!form) return;
+            
+            // Fill the form with existing data
+            document.getElementById('newFormName').value = form.name;
+            document.getElementById('newFormDescription').value = form.description;
+            document.getElementById('newFormColor').value = form.color;
+            document.getElementById('newFormRecipient').value = form.recipient;
+            document.getElementById('newFormSubject').value = form.subject;
+            document.getElementById('newFormContent').value = form.content;
+            document.getElementById('newFormInstructions').value = form.instructions;
+            
+            // Clear and populate custom fields
+            const container = document.getElementById('customFieldsContainer');
+            container.innerHTML = '';
+            
+            form.customFields.forEach(field => {
+                addCustomField();
+                const lastField = container.lastElementChild;
+                lastField.querySelector('.field-name').value = field.name;
+                lastField.querySelector('.field-type').value = field.type;
+                lastField.querySelector('.field-required').value = field.required.toString();
+                
+                if (field.type === 'select' && field.options) {
+                    const optionsContainer = lastField.querySelector('.field-options');
+                    optionsContainer.classList.remove('hidden');
+                    lastField.querySelector('.field-options-text').value = field.options.join('\n');
+                }
+            });
+            
+            // Change form title and button text
+            document.querySelector('#addFormModal .text-2xl').textContent = 'تعديل النموذج';
+            document.querySelector('#addFormModal button[type="submit"]').innerHTML = `
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z"/>
+                </svg>
+                حفظ التعديلات
+            `;
+            
+            // Store the form ID being edited
+            window.editingFormId = formId;
+            
+            document.getElementById('addFormModal').classList.add('active');
+        }
+
+        function deleteForm(formId) {
+            if (confirm('هل أنت متأكد من حذف هذا النموذج؟')) {
+                customForms = customForms.filter(form => form.id !== formId);
+                localStorage.setItem('customForms', JSON.stringify(customForms));
+                renderForms();
+                updateStats();
+                populateFilterOptions();
+            }
+        }
+
+        function generateEmailContent(submissionData) {
+            const form = getAllForms().find(f => f.id === currentFormType);
+            const formData = submissionData.formData || {};
+
+            const attachmentsSection = selectedAttachments.length > 0 ? `
+                <div style="background: #fef3c7; padding: 20px; border-radius: 12px; margin: 20px 0; border-right: 4px solid #f59e0b;">
+                    <h4 style="color: #92400e; margin-bottom: 15px; font-weight: bold; display: flex; align-items: center; gap: 8px;">
+                        📎 المرفقات (${selectedAttachments.length}):
+                    </h4>
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        ${selectedAttachments.map(file => `
+                            <li style="margin-bottom: 8px; color: #92400e; background: #fbbf24; background-opacity: 0.2; padding: 8px 12px; border-radius: 8px; display: flex; align-items: center; gap: 8px;">
+                                <span>📄</span>
+                                <span style="font-weight: 500;">${file.name}</span>
+                                <span style="font-size: 12px; opacity: 0.8;">(${(file.size / 1024).toFixed(1)} KB)</span>
+                            </li>
+                        `).join('')}
+                    </ul>
+                </div>
+            ` : '';
+
+            // Generate dynamic table based on form fields
+            let tableRows = '';
+            Object.entries(formData).forEach(([fieldName, fieldValue]) => {
+                let displayValue = fieldValue;
+                
+                // Format date fields
+                if (fieldName.includes('تاريخ') || fieldName.includes('التاريخ')) {
+                    try {
+                        displayValue = new Date(fieldValue).toLocaleDateString('ar-SA', {
+                            weekday: 'long',
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                        });
+                    } catch (e) {
+                        displayValue = fieldValue;
+                    }
+                }
+                
+                // Add prefix for certain fields
+                if (fieldName.includes('عدد') && !isNaN(fieldValue)) {
+                    displayValue = `${fieldValue} ${fieldName.includes('مشارك') ? 'مشارك' : ''}`;
+                }
+                if (fieldName.includes('فترة') && fieldValue) {
+                    displayValue = `الفترة ${fieldValue}`;
+                }
+                
+                tableRows += `
+                    <tr style="border-bottom: 1px solid #e5e7eb;">
+                        <td style="padding: 15px; font-weight: bold; background: #f8fafc; color: #2f6363; border-left: 3px solid #2f6363;">${fieldName}:</td>
+                        <td style="padding: 15px; background: #ffffff;">${displayValue}</td>
+                    </tr>
+                `;
+            });
+
+            return `
+                <div style="text-align: right; font-family: 'Cairo', sans-serif; line-height: 1.8; color: #374151;">
+                    <div style="background: linear-gradient(135deg, #2f6363, #1e4040); color: white; padding: 20px; border-radius: 12px; margin-bottom: 30px; text-align: center;">
+                        <h2 style="margin: 0; font-size: 24px; font-weight: bold;">🏛️ جامعة نايف العربية للعلوم الأمنية</h2>
+                        <p style="margin: 10px 0 0 0; opacity: 0.9;">إدارة عمليات التدريب</p>
+                    </div>
+                    
+                    <div style="background: #e0f2fe; padding: 20px; border-radius: 12px; margin-bottom: 25px; border-right: 5px solid #0284c7;">
+                        <div style="display: flex; align-items: center; gap: 10px; justify-content: center;">
+                            <span style="font-size: 20px;">🔢</span>
+                            <p style="margin: 0; font-weight: bold; color: #0c4a6e; font-size: 18px;">رقم المعاملة: ${submissionData.transactionCode}</p>
+                        </div>
+                    </div>
+                    
+                    <p style="margin-bottom: 25px; font-size: 16px;">السلام عليكم ورحمة الله وبركاته،<br><br>تحية طيبة وبعد،</p>
+                    
+                    <p style="margin-bottom: 25px; font-size: 16px; line-height: 1.8;">${form.content}</p>
+                    
+                    <div style="background: #f8fafc; padding: 25px; border-radius: 12px; margin: 25px 0; border: 2px solid #e2e8f0;">
+                        <h3 style="color: #2f6363; margin-bottom: 20px; font-weight: bold; font-size: 20px; display: flex; align-items: center; gap: 10px;">
+                            📋 بيانات النموذج:
+                        </h3>
+                        <table style="width: 100%; border-collapse: collapse; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+                            ${tableRows}
+                        </table>
+                    </div>
+                    
+                    ${attachmentsSection}
+                    
+                    <div style="background: linear-gradient(135deg, #eff6ff, #dbeafe); padding: 25px; border-radius: 12px; margin: 25px 0; border-right: 5px solid #2563eb;">
+                        <h4 style="color: #1e40af; margin-bottom: 15px; font-weight: bold; font-size: 18px; display: flex; align-items: center; gap: 8px;">
+                            ✅ نأمل التكرم من سعادتكم:
+                        </h4>
+                        <div style="white-space: pre-line; font-size: 16px; line-height: 1.8; color: #1e3a8a;">${form.instructions}</div>
+                    </div>
+                    
+                    <p style="margin: 40px 0 25px 0; font-size: 16px;">شاكرين لكم حسن تعاونكم،</p>
+                    
+                    <div style="margin-top: 40px; padding: 25px; background: linear-gradient(135deg, #2f6363, #1e4040); color: white; border-radius: 12px; text-align: center;">
+                        <p style="font-weight: bold; font-size: 18px; margin-bottom: 10px;">فريق عمل إدارة عمليات التدريب</p>
+                        <p style="opacity: 0.9; font-size: 14px; margin-bottom: 5px;">جامعة نايف العربية للعلوم الأمنية</p>
+                        <p style="opacity: 0.8; font-size: 14px; margin-bottom: 15px;">od@nauss.edu.sa</p>
+                        
+                        <div style="border-top: 1px solid rgba(255,255,255,0.3); padding-top: 15px; margin-top: 15px;">
+                            <p style="opacity: 0.7; font-size: 12px; margin-bottom: 5px;">تاريخ الإرسال: ${new Date().toLocaleDateString('ar-SA')}</p>
+                            <p style="opacity: 0.7; font-size: 12px; font-family: 'Courier New', monospace; letter-spacing: 1px;">رقم المعاملة: ${submissionData.transactionCode}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Dynamic form submission handler
+        document.addEventListener('submit', function(e) {
+            if (e.target.id === 'trainingForm') {
+                e.preventDefault();
+                
+                const form = getAllForms().find(f => f.id === currentFormType);
+                const formData = {};
+                
+                // Collect data from dynamic fields
+                form.customFields.forEach((field, index) => {
+                    const fieldElement = document.getElementById(`field_${index}`);
+                    if (fieldElement) {
+                        formData[field.name] = fieldElement.value;
+                    }
+                });
+                
+                const submissionData = {
+                    formType: currentFormType,
+                    formData: formData,
+                    attachments: selectedAttachments.map(file => ({ name: file.name, size: file.size })),
+                    timestamp: new Date().toISOString(),
+                    transactionCode: generateTransactionCode()
+                };
+                
+                const emailContent = generateEmailContent(submissionData);
+                document.getElementById('emailContent').innerHTML = emailContent;
+                
+                closeForm();
+                document.getElementById('emailModal').classList.add('active');
+                
+                // Store form data temporarily for sending
+                window.currentFormData = submissionData;
+            }
+            
+            if (e.target.id === 'newFormTemplate') {
+                e.preventDefault();
+                
+                // Collect custom fields
+                const customFields = [];
+                const fieldElements = document.querySelectorAll('.custom-field');
+                
+                fieldElements.forEach(fieldElement => {
+                    const name = fieldElement.querySelector('.field-name').value;
+                    const type = fieldElement.querySelector('.field-type').value;
+                    const required = fieldElement.querySelector('.field-required').value === 'true';
+                    const optionsText = fieldElement.querySelector('.field-options-text').value;
+                    
+                    if (name.trim()) {
+                        const field = { name, type, required };
+                        
+                        if (type === 'select' && optionsText.trim()) {
+                            field.options = optionsText.split('\n').map(opt => opt.trim()).filter(opt => opt);
+                        }
+                        
+                        customFields.push(field);
+                    }
+                });
+                
+                const formData = {
+                    name: document.getElementById('newFormName').value,
+                    description: document.getElementById('newFormDescription').value,
+                    color: document.getElementById('newFormColor').value,
+                    icon: 'default',
+                    subject: document.getElementById('newFormSubject').value,
+                    content: document.getElementById('newFormContent').value,
+                    instructions: document.getElementById('newFormInstructions').value,
+                    recipient: document.getElementById('newFormRecipient').value,
+                    customFields: customFields
+                };
+                
+                if (window.editingFormId) {
+                    // Edit existing form
+                    const formIndex = customForms.findIndex(f => f.id === window.editingFormId);
+                    if (formIndex !== -1) {
+                        customForms[formIndex] = { ...customForms[formIndex], ...formData };
+                        localStorage.setItem('customForms', JSON.stringify(customForms));
+                        
+                        // Show success message
+                        const successMsg = document.createElement('div');
+                        successMsg.className = 'fixed top-4 left-1/2 transform -translate-x-1/2 bg-blue-600 text-white px-6 py-3 rounded-lg shadow-lg z-50 fade-in';
+                        successMsg.innerHTML = `
+                            <div class="flex items-center gap-2">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z"/>
+                                </svg>
+                                تم تعديل النموذج بنجاح!
+                            </div>
+                        `;
+                        document.body.appendChild(successMsg);
+                        setTimeout(() => successMsg.remove(), 3000);
+                    }
+                } else {
+                    // Add new form
+                    const newForm = {
+                        id: 'custom_' + Date.now(),
+                        ...formData
+                    };
+                    
+                    customForms.push(newForm);
+                    localStorage.setItem('customForms', JSON.stringify(customForms));
+                    
+                    // Show success message
+                    const successMsg = document.createElement('div');
+                    successMsg.className = 'fixed top-4 left-1/2 transform -translate-x-1/2 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg z-50 fade-in';
+                    successMsg.innerHTML = `
+                        <div class="flex items-center gap-2">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z"/>
+                            </svg>
+                            تم إضافة النموذج بنجاح!
+                        </div>
+                    `;
+                    document.body.appendChild(successMsg);
+                    setTimeout(() => successMsg.remove(), 3000);
+                }
+                
+                closeAddFormModal();
+                renderForms();
+                updateStats();
+                populateFilterOptions();
+            }
+        });
+
+        function sendEmail() {
+            const form = getAllForms().find(f => f.id === currentFormType);
+            const formData = window.currentFormData;
+            
+            // Collect all email recipients
+            const recipientElements = document.querySelectorAll('.recipient-email');
+            const recipients = Array.from(recipientElements)
+                .map(el => el.value.trim())
+                .filter(email => email && email.includes('@'));
+            
+            if (recipients.length === 0) {
+                alert('يرجى إضافة عنوان إيميل واحد على الأقل');
+                return;
+            }
+            
+            const emailSubject = form.subject;
+            const emailBody = document.getElementById('emailContent').innerText;
+            
+            // Store the sent form with transaction code
+            sentForms.unshift({
+                ...formData,
+                recipientEmails: recipients,
+                emailSubject: emailSubject,
+                formName: form.name
+            });
+            localStorage.setItem('sentForms', JSON.stringify(sentForms));
+            
+            closeEmailPreview();
+            updateStats();
+            updateNextTransactionCode();
+            
+            // Show success message with transaction code
+            const attachmentInfo = formData.attachments && formData.attachments.length > 0 
+                ? `\nالمرفقات: ${formData.attachments.length} ملف` 
+                : '';
+            
+            const successMsg = document.createElement('div');
+            successMsg.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+            successMsg.innerHTML = `
+                <div class="bg-white rounded-2xl p-8 max-w-md mx-4 text-center slide-up">
+                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-green-600" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-3">تم إرسال الإيميل بنجاح!</h3>
+                    <div class="text-sm text-gray-600 space-y-2 mb-6">
+                        <p><strong>رقم المعاملة:</strong> <span class="transaction-code text-green-600">${formData.transactionCode}</span></p>
+                        <p><strong>المرسل إليهم:</strong> ${recipients.length} جهة</p>
+                        <p><strong>الموضوع:</strong> ${emailSubject}</p>
+                        ${attachmentInfo ? `<p><strong>المرفقات:</strong> ${formData.attachments.length} ملف</p>` : ''}
+                    </div>
+                    <p class="text-xs text-gray-500 mb-4">ملاحظة: هذا نموذج تجريبي - في التطبيق الفعلي سيتم إرسال الإيميل تلقائياً.</p>
+                    <button onclick="this.closest('.fixed').remove()" class="bg-primary hover:bg-primary-dark text-white px-6 py-3 rounded-lg font-medium transition-all duration-300">
+                        موافق
+                    </button>
+                </div>
+            `;
+            document.body.appendChild(successMsg);
+        }
+
+        function showPreviousForms() {
+            const formsSection = document.getElementById('previousForms');
+            const formsList = document.getElementById('formsList');
+            
+            if (sentForms.length === 0) {
+                formsList.innerHTML = '<div class="text-center py-12"><div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4"><svg class="w-8 h-8 text-gray-400" fill="currentColor" viewBox="0 0 24 24"><path d="M13,9H18.5L13,3.5V9M6,2H14L20,8V20A2,2 0 0,1 18,22H6C4.89,22 4,21.1 4,20V4C4,2.89 4.89,2 6,2M6,20H15L18,20V10H12V4H6V20Z"/></svg></div><p class="text-gray-500">لا توجد نماذج مرسلة سابقاً</p></div>';
+            } else {
+                formsList.innerHTML = sentForms.slice(0, 10).map(form => {
+                    const formTemplate = getAllForms().find(f => f.id === form.formType);
+                    const colors = colorClasses[formTemplate?.color || 'primary'];
+                    
+                    return `
+                        <div class="bg-white border-2 border-gray-100 hover:border-primary hover:border-opacity-30 p-6 rounded-xl transition-all duration-300 hover:shadow-lg">
+                            <div class="flex justify-between items-start mb-4">
+                                <div class="flex-1">
+                                    <div class="flex items-center gap-3 mb-3">
+                                        <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium transaction-code">
+                                            ${form.transactionCode || 'غير محدد'}
+                                        </span>
+                                        <span class="${colors.bg} text-white px-3 py-1 rounded-full text-xs font-medium">
+                                            ${formTemplate?.name || 'نموذج محذوف'}
+                                        </span>
+                                    </div>
+                                    <h4 class="font-bold text-gray-800 text-lg mb-2">${form.formData?.['اسم الدورة'] || 'غير محدد'}</h4>
+                                    <p class="text-gray-600 text-sm mb-3">${form.emailSubject}</p>
+                                    <div class="flex items-center gap-4 text-sm text-gray-500">
+                                        <span class="flex items-center gap-1">
+                                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                                <path d="M19,19H5V8H19M16,1V3H8V1H6V3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3H18V1M17,12H12V17H17V12Z"/>
+                                            </svg>
+                                            ${new Date(form.timestamp).toLocaleDateString('ar-SA')}
+                                        </span>
+                                        <span class="flex items-center gap-1">
+                                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                                <path d="M20,8L12,13L4,8V6L12,11L20,6M20,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6C22,4.89 21.11,4 20,4Z"/>
+                                            </svg>
+                                            ${form.recipientEmails?.length || 1} جهة
+                                        </span>
+                                        ${form.attachments?.length > 0 ? `
+                                            <span class="flex items-center gap-1">
+                                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                                    <path d="M16.5,6V17.5A4,4 0 0,1 12.5,21.5A4,4 0 0,1 8.5,17.5V5A2.5,2.5 0 0,1 11,2.5A2.5,2.5 0 0,1 13.5,5V15.5A1,1 0 0,1 12.5,16.5A1,1 0 0,1 11.5,15.5V6H10V15.5A2.5,2.5 0 0,0 12.5,18A2.5,2.5 0 0,0 15,15.5V5A4,4 0 0,0 11,1A4,4 0 0,0 7,5V17.5A5.5,5.5 0 0,0 12.5,23A5.5,5.5 0 0,0 18,17.5V6H16.5Z"/>
+                                                </svg>
+                                                ${form.attachments.length} مرفق
+                                            </span>
+                                        ` : ''}
+                                    </div>
+                                </div>
+                                <div class="text-left">
+                                    <span class="bg-green-100 text-green-800 px-3 py-2 rounded-lg text-sm font-medium flex items-center gap-2">
+                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z"/>
+                                        </svg>
+                                        تم الإرسال
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+            
+            formsSection.classList.toggle('hidden');
+        }
+
+        function showArchive() {
+            const archiveSection = document.getElementById('archiveSection');
+            archiveSection.classList.toggle('hidden');
+            
+            if (!archiveSection.classList.contains('hidden')) {
+                displayArchiveResults(sentForms);
+            }
+        }
+
+        function displayArchiveResults(forms) {
+            const archiveResults = document.getElementById('archiveResults');
+            
+            if (forms.length === 0) {
+                archiveResults.innerHTML = '<div class="text-center py-12"><div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4"><svg class="w-8 h-8 text-gray-400" fill="currentColor" viewBox="0 0 24 24"><path d="M3,3H21V5H21V19A2,2 0 0,1 19,21H5A2,2 0 0,1 3,19V5H3V3M5,5V19H19V5H5M7,7H17V9H7V7M7,11H17V13H7V11M7,15H14V17H7V15Z"/></svg></div><p class="text-gray-500">لا توجد معاملات في الأرشيف</p></div>';
+                return;
+            }
+            
+            archiveResults.innerHTML = forms.map(form => {
+                const formTemplate = getAllForms().find(f => f.id === form.formType);
+                const colors = colorClasses[formTemplate?.color || 'primary'];
+                
+                return `
+                    <div class="bg-white border-2 border-gray-100 hover:border-primary hover:border-opacity-30 rounded-xl p-6 transition-all duration-300 hover:shadow-lg">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="flex-1">
+                                <div class="flex items-center gap-3 mb-3">
+                                    <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium transaction-code">
+                                        ${form.transactionCode || 'غير محدد'}
+                                    </span>
+                                    <span class="${colors.bg} text-white px-3 py-1 rounded-full text-xs font-medium">
+                                        ${formTemplate?.name || 'نموذج محذوف'}
+                                    </span>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-lg mb-2">${form.formData?.['اسم الدورة'] || form.courseName || 'غير محدد'}</h4>
+                                <p class="text-gray-600 text-sm mb-3">${form.emailSubject}</p>
+                            </div>
+                            <div class="text-left">
+                                <span class="bg-green-100 text-green-800 px-3 py-2 rounded-lg text-sm font-medium">تم الإرسال</span>
+                            </div>
+                        </div>
+                        
+                        <div class="grid md:grid-cols-3 gap-4 text-sm text-gray-600 mb-4">
+                            <div class="flex items-center gap-2">
+                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M19,19H5V8H19M16,1V3H8V1H6V3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3H18V1M17,12H12V17H17V12Z"/>
+                                </svg>
+                                <span><strong>التاريخ:</strong> ${new Date(form.timestamp).toLocaleDateString('ar-SA')}</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M20,8L12,13L4,8V6L12,11L20,6M20,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6C22,4.89 21.11,4 20,4Z"/>
+                                </svg>
+                                <span><strong>المرسل إلى:</strong> ${form.recipientEmails?.length || 1} جهة</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M16.5,6V17.5A4,4 0 0,1 12.5,21.5A4,4 0 0,1 8.5,17.5V5A2.5,2.5 0 0,1 11,2.5A2.5,2.5 0 0,1 13.5,5V15.5A1,1 0 0,1 12.5,16.5A1,1 0 0,1 11.5,15.5V6H10V15.5A2.5,2.5 0 0,0 12.5,18A2.5,2.5 0 0,0 15,15.5V5A4,4 0 0,0 11,1A4,4 0 0,0 7,5V17.5A5.5,5.5 0 0,0 12.5,23A5.5,5.5 0 0,0 18,17.5V6H16.5Z"/>
+                                </svg>
+                                <span><strong>المرفقات:</strong> ${form.attachments?.length || 0} ملف</span>
+                            </div>
+                        </div>
+                        
+                        <div class="border-t pt-4">
+                            <button onclick="viewTransactionDetails('${form.transactionCode || form.timestamp}')" 
+                                    class="text-primary hover:text-primary-dark text-sm font-medium transition-colors flex items-center gap-2">
+                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17M12,4.5C7,4.5 2.73,7.61 1,12C2.73,16.39 7,19.5 12,19.5C17,19.5 21.27,16.39 23,12C21.27,7.61 17,4.5 12,4.5Z"/>
+                                </svg>
+                                عرض التفاصيل
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function applyFilters() {
+            const fromDate = document.getElementById('filterFromDate').value;
+            const toDate = document.getElementById('filterToDate').value;
+            const formType = document.getElementById('filterFormType').value;
+            const searchTerm = document.getElementById('filterSearch').value.toLowerCase();
+            
+            let filteredForms = sentForms.filter(form => {
+                // Date filter
+                if (fromDate && new Date(form.timestamp) < new Date(fromDate)) return false;
+                if (toDate && new Date(form.timestamp) > new Date(toDate + 'T23:59:59')) return false;
+                
+                // Form type filter
+                if (formType && form.formType !== formType) return false;
+                
+                // Search filter
+                if (searchTerm) {
+                    const searchableText = [
+                        form.transactionCode,
+                        form.emailSubject,
+                        form.formData?.['اسم الدورة'],
+                        form.courseName
+                    ].filter(Boolean).join(' ').toLowerCase();
+                    
+                    if (!searchableText.includes(searchTerm)) return false;
+                }
+                
+                return true;
+            });
+            
+            displayArchiveResults(filteredForms);
+        }
+
+        function clearFilters() {
+            document.getElementById('filterFromDate').value = '';
+            document.getElementById('filterToDate').value = '';
+            document.getElementById('filterFormType').value = '';
+            document.getElementById('filterSearch').value = '';
+            displayArchiveResults(sentForms);
+        }
+
+        function exportArchive() {
+            if (sentForms.length === 0) {
+                alert('لا توجد بيانات للتصدير');
+                return;
+            }
+            
+            // Create CSV content
+            let csvContent = 'رقم المعاملة,نوع النموذج,عنوان الخطاب,عدد الجهات المرسل إليها,التاريخ,عدد المرفقات\n';
+            
+            sentForms.forEach(form => {
+                const formTemplate = getAllForms().find(f => f.id === form.formType);
+                csvContent += `"${form.transactionCode || 'غير محدد'}","${formTemplate?.name || 'نموذج محذوف'}","${form.emailSubject}","${form.recipientEmails?.length || 1}","${new Date(form.timestamp).toLocaleDateString('ar-SA')}","${form.attachments?.length || 0}"\n`;
+            });
+            
+            // Download CSV
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            link.setAttribute('download', `archive_${new Date().toISOString().split('T')[0]}.csv`);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function viewTransactionDetails(transactionCode) {
+            const transaction = sentForms.find(f => f.transactionCode === transactionCode || f.timestamp === transactionCode);
+            if (!transaction) return;
+            
+            const formTemplate = getAllForms().find(f => f.id === transaction.formType);
+            
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4';
+            modal.innerHTML = `
+                <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto slide-up">
+                    <div class="gradient-bg text-white p-6 rounded-t-2xl">
+                        <div class="flex justify-between items-center">
+                            <h3 class="text-xl font-bold">تفاصيل المعاملة</h3>
+                            <button onclick="this.closest('.fixed').remove()" class="text-white hover:text-gray-200 text-2xl">×</button>
+                        </div>
+                    </div>
+                    
+                    <div class="p-6 space-y-4">
+                        <div class="bg-blue-50 p-4 rounded-lg border-2 border-blue-200">
+                            <p class="text-blue-800 font-bold text-lg transaction-code">${transaction.transactionCode || 'غير محدد'}</p>
+                            <p class="text-blue-600 text-sm">رقم المعاملة</p>
+                        </div>
+                        
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div>
+                                <p class="text-gray-600 text-sm">نوع النموذج</p>
+                                <p class="font-bold">${formTemplate?.name || 'نموذج محذوف'}</p>
+                            </div>
+                            <div>
+                                <p class="text-gray-600 text-sm">تاريخ الإرسال</p>
+                                <p class="font-bold">${new Date(transaction.timestamp).toLocaleString('ar-SA')}</p>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <p class="text-gray-600 text-sm">عنوان الخطاب</p>
+                            <p class="font-bold">${transaction.emailSubject}</p>
+                        </div>
+                        
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div>
+                                <p class="text-gray-600 text-sm">عدد الجهات المرسل إليها</p>
+                                <p class="font-bold">${transaction.recipientEmails?.length || 1}</p>
+                            </div>
+                            <div>
+                                <p class="text-gray-600 text-sm">عدد المرفقات</p>
+                                <p class="font-bold">${transaction.attachments?.length || 0}</p>
+                            </div>
+                        </div>
+                        
+                        ${transaction.formData ? `
+                            <div class="border-t pt-4">
+                                <h4 class="font-bold mb-3 text-primary">بيانات النموذج:</h4>
+                                <div class="bg-gray-50 p-4 rounded-lg space-y-2">
+                                    ${Object.entries(transaction.formData).map(([key, value]) => 
+                                        `<div class="flex justify-between"><span class="text-gray-600">${key}:</span><span class="font-medium">${value}</span></div>`
+                                    ).join('')}
+                                </div>
+                            </div>
+                        ` : ''}
+                        
+                        ${transaction.attachments && transaction.attachments.length > 0 ? `
+                            <div class="border-t pt-4">
+                                <h4 class="font-bold mb-3 text-primary">المرفقات:</h4>
+                                <div class="space-y-2">
+                                    ${transaction.attachments.map(att => 
+                                        `<div class="flex items-center gap-2 bg-gray-50 p-2 rounded">
+                                            <svg class="w-4 h-4 text-gray-600" fill="currentColor" viewBox="0 0 24 24">
+                                                <path d="M16.5,6V17.5A4,4 0 0,1 12.5,21.5A4,4 0 0,1 8.5,17.5V5A2.5,2.5 0 0,1 11,2.5A2.5,2.5 0 0,1 13.5,5V15.5A1,1 0 0,1 12.5,16.5A1,1 0 0,1 11.5,15.5V6H10V15.5A2.5,2.5 0 0,0 12.5,18A2.5,2.5 0 0,0 15,15.5V5A4,4 0 0,0 11,1A4,4 0 0,0 7,5V17.5A5.5,5.5 0 0,0 12.5,23A5.5,5.5 0 0,0 18,17.5V6H16.5Z"/>
+                                            </svg>
+                                            <span class="text-sm">${att.name}</span>
+                                            <span class="text-xs text-gray-500">(${(att.size / 1024).toFixed(1)} KB)</span>
+                                        </div>`
+                                    ).join('')}
+                                </div>
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+        }
+
+        // Close modals when clicking outside
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('modal')) {
+                e.target.classList.remove('active');
+            }
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'962c281190279031',t:'MTc1MzExNjE5OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
