@@ -1,13 +1,13 @@
 
-<!DOCTYPE html>
 
-<html dir="rtl" lang="ar">
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>منصة إدارة عمليات التدريب - جامعة نايف العربية للعلوم الأمنية</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة إدارة عمليات التدريب - جامعة نايف العربية للعلوم الأمنية</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
         tailwind.config = {
             theme: {
                 extend: {
@@ -21,7 +21,7 @@
             }
         }
     </script>
-<style>
+    <style>
         @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap');
         
         * {
@@ -105,447 +105,481 @@
     </style>
 </head>
 <body class="bg-gray-50 min-h-screen">
-<!-- Header -->
-<header class="gradient-bg text-white py-8 shadow-2xl relative overflow-hidden">
-<div class="absolute inset-0 opacity-10">
-<div class="absolute top-0 left-0 w-64 h-64 bg-white rounded-full -translate-x-32 -translate-y-32"></div>
-<div class="absolute bottom-0 right-0 w-48 h-48 bg-white rounded-full translate-x-24 translate-y-24"></div>
-</div>
-<div class="container mx-auto px-6 relative z-10">
-<div class="flex items-center justify-center mb-6">
-<div class="bg-white bg-opacity-20 p-4 rounded-2xl backdrop-blur-sm">
-<svg class="w-12 h-12 text-white" fill="currentColor" viewbox="0 0 24 24">
-<path d="M12 2L2 7v10c0 5.55 3.84 9.74 9 11 5.16-1.26 9-5.45 9-11V7l-10-5z"></path>
-<path d="M10 17l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"></path>
-</svg>
-</div>
-</div>
-<div class="text-center">
-<h1 class="text-3xl md:text-4xl font-bold mb-3">منصة إدارة عمليات التدريب</h1>
-<p class="text-xl mb-2 opacity-90">جامعة نايف العربية للعلوم الأمنية</p>
-<p class="text-sm opacity-75">نظام إلكتروني متكامل لإدارة النماذج والمعاملات التدريبية</p>
-</div>
-</div>
-</header>
-<!-- Main Content -->
-<main class="container mx-auto px-6 py-12">
-<!-- Quick Stats -->
-<div class="grid md:grid-cols-3 gap-6 mb-12">
-<div class="bg-white rounded-2xl p-6 shadow-lg border-t-4 border-primary">
-<div class="flex items-center justify-between">
-<div>
-<p class="text-gray-600 text-sm">النماذج المتاحة</p>
-<p class="text-2xl font-bold text-primary" id="totalForms">0</p>
-</div>
-<div class="bg-primary bg-opacity-10 p-3 rounded-xl">
-<svg class="w-8 h-8 text-primary" fill="currentColor" viewbox="0 0 24 24">
-<path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"></path>
-</svg>
-</div>
-</div>
-</div>
-<div class="bg-white rounded-2xl p-6 shadow-lg border-t-4 border-secondary">
-<div class="flex items-center justify-between">
-<div>
-<p class="text-gray-600 text-sm">المعاملات المرسلة</p>
-<p class="text-2xl font-bold text-secondary" id="sentCount">0</p>
-</div>
-<div class="bg-secondary bg-opacity-10 p-3 rounded-xl">
-<svg class="w-8 h-8 text-secondary" fill="currentColor" viewbox="0 0 24 24">
-<path d="M2,21L23,12L2,3V10L17,12L2,14V21Z"></path>
-</svg>
-</div>
-</div>
-</div>
-<div class="bg-white rounded-2xl p-6 shadow-lg border-t-4 border-green-500">
-<div class="flex items-center justify-between">
-<div>
-<p class="text-gray-600 text-sm">آخر رقم معاملة</p>
-<p class="text-lg font-bold text-green-600 transaction-code" id="lastTransaction">OD-2025-001</p>
-</div>
-<div class="bg-green-100 p-3 rounded-xl">
-<svg class="w-8 h-8 text-green-600" fill="currentColor" viewbox="0 0 24 24">
-<path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z"></path>
-</svg>
-</div>
-</div>
-</div>
-</div>
-<!-- Forms Grid -->
-<div class="mb-12">
-<div class="flex items-center justify-between mb-8">
-<h2 class="text-2xl font-bold text-gray-800 flex items-center gap-3">
-<div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-<svg class="w-5 h-5 text-white" fill="currentColor" viewbox="0 0 24 24">
-<path d="M19,3H5C3.9,3 3,3.9 3,5V19C3,20.1 3.9,21 5,21H19C20.1,21 21,20.1 21,19V5C21,3.9 20.1,3 19,3M19,19H5V5H19V19Z"></path>
-</svg>
-</div>
+    <!-- Header -->
+    <header class="gradient-bg text-white py-8 shadow-2xl relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute top-0 left-0 w-64 h-64 bg-white rounded-full -translate-x-32 -translate-y-32"></div>
+            <div class="absolute bottom-0 right-0 w-48 h-48 bg-white rounded-full translate-x-24 translate-y-24"></div>
+        </div>
+        
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="flex items-center justify-center mb-6">
+                <div class="bg-white bg-opacity-20 p-4 rounded-2xl backdrop-blur-sm">
+                    <svg class="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2L2 7v10c0 5.55 3.84 9.74 9 11 5.16-1.26 9-5.45 9-11V7l-10-5z"/>
+                        <path d="M10 17l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/>
+                    </svg>
+                </div>
+            </div>
+            
+            <div class="text-center">
+                <h1 class="text-3xl md:text-4xl font-bold mb-3">منصة إدارة عمليات التدريب</h1>
+                <p class="text-xl mb-2 opacity-90">جامعة نايف العربية للعلوم الأمنية</p>
+                <p class="text-sm opacity-75">نظام إلكتروني متكامل لإدارة النماذج والمعاملات التدريبية</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 py-12">
+        <!-- Quick Stats -->
+        <div class="grid md:grid-cols-3 gap-6 mb-12">
+            <div class="bg-white rounded-2xl p-6 shadow-lg border-t-4 border-primary">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-600 text-sm">النماذج المتاحة</p>
+                        <p class="text-2xl font-bold text-primary" id="totalForms">0</p>
+                    </div>
+                    <div class="bg-primary bg-opacity-10 p-3 rounded-xl">
+                        <svg class="w-8 h-8 text-primary" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-2xl p-6 shadow-lg border-t-4 border-secondary">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-600 text-sm">المعاملات المرسلة</p>
+                        <p class="text-2xl font-bold text-secondary" id="sentCount">0</p>
+                    </div>
+                    <div class="bg-secondary bg-opacity-10 p-3 rounded-xl">
+                        <svg class="w-8 h-8 text-secondary" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M2,21L23,12L2,3V10L17,12L2,14V21Z"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-2xl p-6 shadow-lg border-t-4 border-green-500">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-600 text-sm">آخر رقم معاملة</p>
+                        <p class="text-lg font-bold text-green-600 transaction-code" id="lastTransaction">OD-2025-001</p>
+                    </div>
+                    <div class="bg-green-100 p-3 rounded-xl">
+                        <svg class="w-8 h-8 text-green-600" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Forms Grid -->
+        <div class="mb-12">
+            <div class="flex items-center justify-between mb-8">
+                <h2 class="text-2xl font-bold text-gray-800 flex items-center gap-3">
+                    <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+                        <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M19,3H5C3.9,3 3,3.9 3,5V19C3,20.1 3.9,21 5,21H19C20.1,21 21,20.1 21,19V5C21,3.9 20.1,3 19,3M19,19H5V5H19V19Z"/>
+                        </svg>
+                    </div>
                     النماذج المتاحة
                 </h2>
-<button class="bg-secondary hover:bg-secondary-light text-white px-6 py-3 rounded-xl font-medium transition-all duration-300 flex items-center gap-2 shadow-lg hover:shadow-xl" onclick="openAddFormModal()">
-<svg class="w-5 h-5" fill="currentColor" viewbox="0 0 24 24">
-<path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"></path>
-</svg>
+                
+                <button onclick="openAddFormModal()" class="bg-secondary hover:bg-secondary-light text-white px-6 py-3 rounded-xl font-medium transition-all duration-300 flex items-center gap-2 shadow-lg hover:shadow-xl">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"/>
+                    </svg>
                     إضافة نموذج جديد
                 </button>
-</div>
-<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8" id="formsGrid">
-<!-- Forms will be rendered here -->
-</div>
-</div>
-<!-- Action Buttons -->
-<div class="grid md:grid-cols-2 gap-8 mb-12">
-<button class="bg-white hover:bg-gray-50 border-2 border-primary text-primary font-bold py-8 px-6 rounded-2xl transition-all duration-300 hover-lift group" onclick="showArchive()">
-<div class="flex flex-col items-center space-y-4">
-<div class="bg-primary bg-opacity-10 p-6 rounded-2xl group-hover:bg-opacity-20 transition-all duration-300">
-<svg class="w-12 h-12 text-primary" fill="currentColor" viewbox="0 0 24 24">
-<path d="M3,3H21V5H21V19A2,2 0 0,1 19,21H5A2,2 0 0,1 3,19V5H3V3M5,5V19H19V5H5M7,7H17V9H7V7M7,11H17V13H7V11M7,15H14V17H7V15Z"></path>
-</svg>
-</div>
-<div class="text-center">
-<h3 class="text-xl font-bold mb-2">أرشيف المعاملات</h3>
-<p class="text-gray-600 text-sm">عرض وإدارة جميع المعاملات المرسلة</p>
-</div>
-</div>
-</button>
-<button class="bg-white hover:bg-gray-50 border-2 border-secondary text-secondary font-bold py-8 px-6 rounded-2xl transition-all duration-300 hover-lift group" onclick="showPreviousForms()">
-<div class="flex flex-col items-center space-y-4">
-<div class="bg-secondary bg-opacity-10 p-6 rounded-2xl group-hover:bg-opacity-20 transition-all duration-300">
-<svg class="w-12 h-12 text-secondary" fill="currentColor" viewbox="0 0 24 24">
-<path d="M13,9H18.5L13,3.5V9M6,2H14L20,8V20A2,2 0 0,1 18,22H6C4.89,22 4,21.1 4,20V4C4,2.89 4.89,2 6,2M6,20H15L18,20V10H12V4H6V20Z"></path>
-</svg>
-</div>
-<div class="text-center">
-<h3 class="text-xl font-bold mb-2">النماذج المرسلة</h3>
-<p class="text-gray-600 text-sm">مراجعة النماذج التي تم إرسالها مؤخراً</p>
-</div>
-</div>
-</button>
-</div>
-<!-- Previous Forms Section -->
-<div class="hidden bg-white rounded-2xl shadow-xl p-8 mb-8" id="previousForms">
-<div class="flex items-center gap-3 mb-6">
-<div class="w-8 h-8 bg-secondary rounded-lg flex items-center justify-center">
-<svg class="w-5 h-5 text-white" fill="currentColor" viewbox="0 0 24 24">
-<path d="M13,9H18.5L13,3.5V9M6,2H14L20,8V20A2,2 0 0,1 18,22H6C4.89,22 4,21.1 4,20V4C4,2.89 4.89,2 6,2M6,20H15L18,20V10H12V4H6V20Z"></path>
-</svg>
-</div>
-<h3 class="text-2xl font-bold text-gray-800">النماذج المرسلة مؤخراً</h3>
-</div>
-<div class="space-y-4" id="formsList">
-<!-- Previous forms will be displayed here -->
-</div>
-</div>
-<!-- Archive Section -->
-<div class="hidden bg-white rounded-2xl shadow-xl p-8 mb-8" id="archiveSection">
-<div class="flex items-center justify-between mb-8">
-<div class="flex items-center gap-3">
-<div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-<svg class="w-5 h-5 text-white" fill="currentColor" viewbox="0 0 24 24">
-<path d="M3,3H21V5H21V19A2,2 0 0,1 19,21H5A2,2 0 0,1 3,19V5H3V3M5,5V19H19V5H5M7,7H17V9H7V7M7,11H17V13H7V11M7,15H14V17H7V15Z"></path>
-</svg>
-</div>
-<h3 class="text-2xl font-bold text-gray-800">أرشيف المعاملات</h3>
-</div>
-<button class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl font-medium transition-all duration-300 flex items-center gap-2 shadow-lg" onclick="exportArchive()">
-<svg class="w-5 h-5" fill="currentColor" viewbox="0 0 24 24">
-<path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"></path>
-</svg>
+            </div>
+            
+            <div id="formsGrid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Forms will be rendered here -->
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="grid md:grid-cols-2 gap-8 mb-12">
+            <button onclick="showArchive()" class="bg-white hover:bg-gray-50 border-2 border-primary text-primary font-bold py-8 px-6 rounded-2xl transition-all duration-300 hover-lift group">
+                <div class="flex flex-col items-center space-y-4">
+                    <div class="bg-primary bg-opacity-10 p-6 rounded-2xl group-hover:bg-opacity-20 transition-all duration-300">
+                        <svg class="w-12 h-12 text-primary" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M3,3H21V5H21V19A2,2 0 0,1 19,21H5A2,2 0 0,1 3,19V5H3V3M5,5V19H19V5H5M7,7H17V9H7V7M7,11H17V13H7V11M7,15H14V17H7V15Z"/>
+                        </svg>
+                    </div>
+                    <div class="text-center">
+                        <h3 class="text-xl font-bold mb-2">أرشيف المعاملات</h3>
+                        <p class="text-gray-600 text-sm">عرض وإدارة جميع المعاملات المرسلة</p>
+                    </div>
+                </div>
+            </button>
+            
+            <button onclick="showPreviousForms()" class="bg-white hover:bg-gray-50 border-2 border-secondary text-secondary font-bold py-8 px-6 rounded-2xl transition-all duration-300 hover-lift group">
+                <div class="flex flex-col items-center space-y-4">
+                    <div class="bg-secondary bg-opacity-10 p-6 rounded-2xl group-hover:bg-opacity-20 transition-all duration-300">
+                        <svg class="w-12 h-12 text-secondary" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M13,9H18.5L13,3.5V9M6,2H14L20,8V20A2,2 0 0,1 18,22H6C4.89,22 4,21.1 4,20V4C4,2.89 4.89,2 6,2M6,20H15L18,20V10H12V4H6V20Z"/>
+                        </svg>
+                    </div>
+                    <div class="text-center">
+                        <h3 class="text-xl font-bold mb-2">النماذج المرسلة</h3>
+                        <p class="text-gray-600 text-sm">مراجعة النماذج التي تم إرسالها مؤخراً</p>
+                    </div>
+                </div>
+            </button>
+        </div>
+
+        <!-- Previous Forms Section -->
+        <div id="previousForms" class="hidden bg-white rounded-2xl shadow-xl p-8 mb-8">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-8 h-8 bg-secondary rounded-lg flex items-center justify-center">
+                    <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M13,9H18.5L13,3.5V9M6,2H14L20,8V20A2,2 0 0,1 18,22H6C4.89,22 4,21.1 4,20V4C4,2.89 4.89,2 6,2M6,20H15L18,20V10H12V4H6V20Z"/>
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-bold text-gray-800">النماذج المرسلة مؤخراً</h3>
+            </div>
+            <div id="formsList" class="space-y-4">
+                <!-- Previous forms will be displayed here -->
+            </div>
+        </div>
+
+        <!-- Archive Section -->
+        <div id="archiveSection" class="hidden bg-white rounded-2xl shadow-xl p-8 mb-8">
+            <div class="flex items-center justify-between mb-8">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+                        <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M3,3H21V5H21V19A2,2 0 0,1 19,21H5A2,2 0 0,1 3,19V5H3V3M5,5V19H19V5H5M7,7H17V9H7V7M7,11H17V13H7V11M7,15H14V17H7V15Z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800">أرشيف المعاملات</h3>
+                </div>
+                
+                <button onclick="exportArchive()" class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl font-medium transition-all duration-300 flex items-center gap-2 shadow-lg">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+                    </svg>
                     تصدير Excel
                 </button>
-</div>
-<!-- Filters -->
-<div class="bg-gray-50 p-6 rounded-xl mb-8">
-<h4 class="font-bold text-gray-700 mb-4 flex items-center gap-2">
-<svg class="w-5 h-5" fill="currentColor" viewbox="0 0 24 24">
-<path d="M14,12V19.88C14.04,20.18 13.94,20.5 13.71,20.71C13.32,21.1 12.69,21.1 12.3,20.71L10.29,18.7C10.06,18.47 9.96,18.16 10,17.87V12H9.97L4.21,4.62C3.87,4.19 3.95,3.56 4.38,3.22C4.57,3.08 4.78,3 5,3V3H19V3C19.22,3 19.43,3.08 19.62,3.22C20.05,3.56 20.13,4.19 19.79,4.62L14.03,12H14Z"></path>
-</svg>
+            </div>
+            
+            <!-- Filters -->
+            <div class="bg-gray-50 p-6 rounded-xl mb-8">
+                <h4 class="font-bold text-gray-700 mb-4 flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M14,12V19.88C14.04,20.18 13.94,20.5 13.71,20.71C13.32,21.1 12.69,21.1 12.3,20.71L10.29,18.7C10.06,18.47 9.96,18.16 10,17.87V12H9.97L4.21,4.62C3.87,4.19 3.95,3.56 4.38,3.22C4.57,3.08 4.78,3 5,3V3H19V3C19.22,3 19.43,3.08 19.62,3.22C20.05,3.56 20.13,4.19 19.79,4.62L14.03,12H14Z"/>
+                    </svg>
                     فلترة النتائج
                 </h4>
-<div class="grid md:grid-cols-4 gap-4">
-<div>
-<label class="block text-sm font-medium text-gray-700 mb-2">من تاريخ</label>
-<input class="w-full p-3 border border-gray-300 rounded-lg focus:border-primary focus:outline-none transition-colors" id="filterFromDate" type="date"/>
-</div>
-<div>
-<label class="block text-sm font-medium text-gray-700 mb-2">إلى تاريخ</label>
-<input class="w-full p-3 border border-gray-300 rounded-lg focus:border-primary focus:outline-none transition-colors" id="filterToDate" type="date"/>
-</div>
-<div>
-<label class="block text-sm font-medium text-gray-700 mb-2">نوع النموذج</label>
-<select class="w-full p-3 border border-gray-300 rounded-lg focus:border-primary focus:outline-none transition-colors" id="filterFormType">
-<option value="">جميع النماذج</option>
-</select>
-</div>
-<div>
-<label class="block text-sm font-medium text-gray-700 mb-2">البحث</label>
-<input class="w-full p-3 border border-gray-300 rounded-lg focus:border-primary focus:outline-none transition-colors" id="filterSearch" placeholder="البحث في المعاملات..." type="text"/>
-</div>
-</div>
-<div class="flex gap-3 mt-6">
-<button class="bg-primary hover:bg-primary-dark text-white px-6 py-3 rounded-lg font-medium transition-all duration-300 flex items-center gap-2" onclick="applyFilters()">
-<svg class="w-4 h-4" fill="currentColor" viewbox="0 0 24 24">
-<path d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z"></path>
-</svg>
+                <div class="grid md:grid-cols-4 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">من تاريخ</label>
+                        <input type="date" id="filterFromDate" class="w-full p-3 border border-gray-300 rounded-lg focus:border-primary focus:outline-none transition-colors">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">إلى تاريخ</label>
+                        <input type="date" id="filterToDate" class="w-full p-3 border border-gray-300 rounded-lg focus:border-primary focus:outline-none transition-colors">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">نوع النموذج</label>
+                        <select id="filterFormType" class="w-full p-3 border border-gray-300 rounded-lg focus:border-primary focus:outline-none transition-colors">
+                            <option value="">جميع النماذج</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">البحث</label>
+                        <input type="text" id="filterSearch" placeholder="البحث في المعاملات..." class="w-full p-3 border border-gray-300 rounded-lg focus:border-primary focus:outline-none transition-colors">
+                    </div>
+                </div>
+                <div class="flex gap-3 mt-6">
+                    <button onclick="applyFilters()" class="bg-primary hover:bg-primary-dark text-white px-6 py-3 rounded-lg font-medium transition-all duration-300 flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z"/>
+                        </svg>
                         تطبيق الفلترة
                     </button>
-<button class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg font-medium transition-all duration-300" onclick="clearFilters()">
+                    <button onclick="clearFilters()" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg font-medium transition-all duration-300">
                         مسح الفلاتر
                     </button>
-</div>
-</div>
-<!-- Archive Results -->
-<div class="space-y-4" id="archiveResults">
-<!-- Archive results will be displayed here -->
-</div>
-</div>
-</main>
-<!-- Footer -->
-<footer class="gradient-bg text-white py-12 mt-16">
-<div class="container mx-auto px-6">
-<div class="text-center">
-<div class="flex items-center justify-center mb-6">
-<div class="bg-white bg-opacity-20 p-4 rounded-2xl backdrop-blur-sm">
-<svg class="w-10 h-10 text-white" fill="currentColor" viewbox="0 0 24 24">
-<path d="M12 2L2 7v10c0 5.55 3.84 9.74 9 11 5.16-1.26 9-5.45 9-11V7l-10-5z"></path>
-</svg>
-</div>
-</div>
-<h4 class="text-2xl font-bold mb-3">منصة إدارة عمليات التدريب</h4>
-<p class="text-lg mb-2 opacity-90">جامعة نايف العربية للعلوم الأمنية</p>
-<p class="text-sm opacity-75 mb-6">od@nauss.edu.sa</p>
-<div class="border-t border-white border-opacity-20 pt-6">
-<p class="text-sm opacity-75">© 2025 جميع الحقوق محفوظة - جامعة نايف العربية للعلوم الأمنية</p>
-</div>
-</div>
-</div>
-</footer>
-<!-- Form Modal -->
-<div class="modal" id="formModal">
-<div class="bg-white rounded-2xl shadow-2xl w-full max-w-4xl mx-4 max-h-[90vh] overflow-y-auto slide-up">
-<div class="gradient-bg text-white p-6 rounded-t-2xl">
-<div class="flex justify-between items-center">
-<div class="flex items-center gap-3">
-<div class="bg-white bg-opacity-20 p-2 rounded-lg">
-<svg class="w-6 h-6" fill="currentColor" viewbox="0 0 24 24">
-<path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"></path>
-</svg>
-</div>
-<h2 class="text-2xl font-bold" id="modalTitle"></h2>
-</div>
-<button class="text-white hover:text-gray-200 text-3xl font-light transition-colors" onclick="closeForm()">×</button>
-</div>
-</div>
-<form class="p-8 space-y-6" id="trainingForm">
-<!-- Dynamic form content will be generated here -->
-<!-- Email Recipients Section -->
-<div class="border-t pt-6">
-<div class="flex items-center justify-between mb-4">
-<label class="block text-gray-700 font-bold text-lg flex items-center gap-2">
-<svg class="w-5 h-5 text-primary" fill="currentColor" viewbox="0 0 24 24">
-<path d="M20,8L12,13L4,8V6L12,11L20,6M20,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6C22,4.89 21.11,4 20,4Z"></path>
-</svg>
+                </div>
+            </div>
+            
+            <!-- Archive Results -->
+            <div id="archiveResults" class="space-y-4">
+                <!-- Archive results will be displayed here -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="gradient-bg text-white py-12 mt-16">
+        <div class="container mx-auto px-6">
+            <div class="text-center">
+                <div class="flex items-center justify-center mb-6">
+                    <div class="bg-white bg-opacity-20 p-4 rounded-2xl backdrop-blur-sm">
+                        <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2L2 7v10c0 5.55 3.84 9.74 9 11 5.16-1.26 9-5.45 9-11V7l-10-5z"/>
+                        </svg>
+                    </div>
+                </div>
+                <h4 class="text-2xl font-bold mb-3">منصة إدارة عمليات التدريب</h4>
+                <p class="text-lg mb-2 opacity-90">جامعة نايف العربية للعلوم الأمنية</p>
+                <p class="text-sm opacity-75 mb-6">od@nauss.edu.sa</p>
+                
+                <div class="border-t border-white border-opacity-20 pt-6">
+                    <p class="text-sm opacity-75">© 2025 جميع الحقوق محفوظة - جامعة نايف العربية للعلوم الأمنية</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Form Modal -->
+    <div id="formModal" class="modal">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-4xl mx-4 max-h-[90vh] overflow-y-auto slide-up">
+            <div class="gradient-bg text-white p-6 rounded-t-2xl">
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center gap-3">
+                        <div class="bg-white bg-opacity-20 p-2 rounded-lg">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+                            </svg>
+                        </div>
+                        <h2 id="modalTitle" class="text-2xl font-bold"></h2>
+                    </div>
+                    <button onclick="closeForm()" class="text-white hover:text-gray-200 text-3xl font-light transition-colors">×</button>
+                </div>
+            </div>
+            
+            <form id="trainingForm" class="p-8 space-y-6">
+                <!-- Dynamic form content will be generated here -->
+                
+                <!-- Email Recipients Section -->
+                <div class="border-t pt-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <label class="block text-gray-700 font-bold text-lg flex items-center gap-2">
+                            <svg class="w-5 h-5 text-primary" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M20,8L12,13L4,8V6L12,11L20,6M20,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6C22,4.89 21.11,4 20,4Z"/>
+                            </svg>
                             المرسل إليهم
                         </label>
-<button class="bg-secondary hover:bg-secondary-light text-white px-4 py-2 rounded-lg font-medium transition-all duration-300 flex items-center gap-2" onclick="addEmailRecipient()" type="button">
-<svg class="w-4 h-4" fill="currentColor" viewbox="0 0 24 24">
-<path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"></path>
-</svg>
+                        <button type="button" onclick="addEmailRecipient()" class="bg-secondary hover:bg-secondary-light text-white px-4 py-2 rounded-lg font-medium transition-all duration-300 flex items-center gap-2">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"/>
+                            </svg>
                             إضافة إيميل
                         </button>
-</div>
-<div class="space-y-3" id="emailRecipientsContainer">
-<div class="email-recipient bg-gray-50 p-4 rounded-lg border-2 border-primary border-opacity-20">
-<div class="flex items-center gap-3">
-<div class="flex-1">
-<input class="recipient-email w-full p-3 border border-gray-300 rounded-lg focus:border-primary focus:outline-none transition-colors" readonly="" type="email" value="od@nauss.edu.sa"/>
-</div>
-<div class="bg-primary text-white px-3 py-2 rounded-lg text-sm font-medium">
+                    </div>
+                    
+                    <div id="emailRecipientsContainer" class="space-y-3">
+                        <div class="email-recipient bg-gray-50 p-4 rounded-lg border-2 border-primary border-opacity-20">
+                            <div class="flex items-center gap-3">
+                                <div class="flex-1">
+                                    <input type="email" value="od@nauss.edu.sa" class="recipient-email w-full p-3 border border-gray-300 rounded-lg focus:border-primary focus:outline-none transition-colors" readonly>
+                                </div>
+                                <div class="bg-primary text-white px-3 py-2 rounded-lg text-sm font-medium">
                                     الإيميل الرئيسي
                                 </div>
-</div>
-</div>
-</div>
-</div>
-<!-- Attachments Section -->
-<div class="border-t pt-6">
-<label class="block text-gray-700 font-bold mb-4 text-lg flex items-center gap-2">
-<svg class="w-5 h-5 text-primary" fill="currentColor" viewbox="0 0 24 24">
-<path d="M16.5,6V17.5A4,4 0 0,1 12.5,21.5A4,4 0 0,1 8.5,17.5V5A2.5,2.5 0 0,1 11,2.5A2.5,2.5 0 0,1 13.5,5V15.5A1,1 0 0,1 12.5,16.5A1,1 0 0,1 11.5,15.5V6H10V15.5A2.5,2.5 0 0,0 12.5,18A2.5,2.5 0 0,0 15,15.5V5A4,4 0 0,0 11,1A4,4 0 0,0 7,5V17.5A5.5,5.5 0 0,0 12.5,23A5.5,5.5 0 0,0 18,17.5V6H16.5Z"></path>
-</svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Attachments Section -->
+                <div class="border-t pt-6">
+                    <label class="block text-gray-700 font-bold mb-4 text-lg flex items-center gap-2">
+                        <svg class="w-5 h-5 text-primary" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M16.5,6V17.5A4,4 0 0,1 12.5,21.5A4,4 0 0,1 8.5,17.5V5A2.5,2.5 0 0,1 11,2.5A2.5,2.5 0 0,1 13.5,5V15.5A1,1 0 0,1 12.5,16.5A1,1 0 0,1 11.5,15.5V6H10V15.5A2.5,2.5 0 0,0 12.5,18A2.5,2.5 0 0,0 15,15.5V5A4,4 0 0,0 11,1A4,4 0 0,0 7,5V17.5A5.5,5.5 0 0,0 12.5,23A5.5,5.5 0 0,0 18,17.5V6H16.5Z"/>
+                        </svg>
                         المرفقات (اختياري)
                     </label>
-<input accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.xlsx,.xls" class="w-full p-4 border-2 border-dashed border-gray-300 rounded-lg focus:border-primary focus:outline-none transition-colors hover:border-gray-400" id="attachments" multiple="" type="file"/>
-<p class="text-sm text-gray-500 mt-2 flex items-center gap-2">
-<svg class="w-4 h-4" fill="currentColor" viewbox="0 0 24 24">
-<path d="M13,9H18.5L13,3.5V9M6,2H14L20,8V20A2,2 0 0,1 18,22H6C4.89,22 4,21.1 4,20V4C4,2.89 4.89,2 6,2M6,20H15L18,20V10H12V4H6V20Z"></path>
-</svg>
+                    <input type="file" id="attachments" multiple class="w-full p-4 border-2 border-dashed border-gray-300 rounded-lg focus:border-primary focus:outline-none transition-colors hover:border-gray-400" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.xlsx,.xls">
+                    <p class="text-sm text-gray-500 mt-2 flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M13,9H18.5L13,3.5V9M6,2H14L20,8V20A2,2 0 0,1 18,22H6C4.89,22 4,21.1 4,20V4C4,2.89 4.89,2 6,2M6,20H15L18,20V10H12V4H6V20Z"/>
+                        </svg>
                         يمكنك إرفاق ملفات متعددة (PDF, Word, Excel, صور)
                     </p>
-<div class="mt-4 space-y-2" id="attachmentsList"></div>
-</div>
-<!-- Transaction Code Display -->
-<div class="bg-gradient-to-r from-green-50 to-blue-50 p-6 rounded-xl border-2 border-green-200">
-<div class="flex items-center justify-between">
-<div class="flex items-center gap-3">
-<div class="bg-green-500 p-2 rounded-lg">
-<svg class="w-6 h-6 text-white" fill="currentColor" viewbox="0 0 24 24">
-<path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z"></path>
-</svg>
-</div>
-<div>
-<p class="text-gray-600 text-sm">رقم المعاملة المتوقع</p>
-<p class="text-2xl font-bold text-green-600 transaction-code" id="nextTransactionCode">OD-2025-001</p>
-</div>
-</div>
-<div class="text-left">
-<p class="text-gray-500 text-xs">سيتم تعيين الرقم عند الإرسال</p>
-<p class="text-gray-400 text-xs" id="currentDateTime"></p>
-</div>
-</div>
-</div>
-<div class="flex gap-4 pt-6">
-<button class="flex-1 gradient-bg hover:bg-primary-dark text-white font-bold py-4 px-8 rounded-xl transition-all duration-300 flex items-center justify-center gap-3 shadow-lg hover:shadow-xl" type="submit">
-<svg class="w-6 h-6" fill="currentColor" viewbox="0 0 24 24">
-<path d="M2,21L23,12L2,3V10L17,12L2,14V21Z"></path>
-</svg>
+                    <div id="attachmentsList" class="mt-4 space-y-2"></div>
+                </div>
+                
+                <!-- Transaction Code Display -->
+                <div class="bg-gradient-to-r from-green-50 to-blue-50 p-6 rounded-xl border-2 border-green-200">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="bg-green-500 p-2 rounded-lg">
+                                <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-gray-600 text-sm">رقم المعاملة المتوقع</p>
+                                <p class="text-2xl font-bold text-green-600 transaction-code" id="nextTransactionCode">OD-2025-001</p>
+                            </div>
+                        </div>
+                        <div class="text-left">
+                            <p class="text-gray-500 text-xs">سيتم تعيين الرقم عند الإرسال</p>
+                            <p class="text-gray-400 text-xs" id="currentDateTime"></p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex gap-4 pt-6">
+                    <button type="submit" class="flex-1 gradient-bg hover:bg-primary-dark text-white font-bold py-4 px-8 rounded-xl transition-all duration-300 flex items-center justify-center gap-3 shadow-lg hover:shadow-xl">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M2,21L23,12L2,3V10L17,12L2,14V21Z"/>
+                        </svg>
                         إنشاء وإرسال الإيميل
                     </button>
-<button class="px-8 py-4 border-2 border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-all duration-300 font-medium" onclick="closeForm()" type="button">
+                    <button type="button" onclick="closeForm()" class="px-8 py-4 border-2 border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-all duration-300 font-medium">
                         إلغاء
                     </button>
-</div>
-</form>
-</div>
-</div>
-<!-- Add New Form Modal -->
-<div class="modal" id="addFormModal">
-<div class="bg-white rounded-2xl shadow-2xl w-full max-w-5xl mx-4 max-h-[90vh] overflow-y-auto slide-up">
-<div class="secondary-gradient text-white p-6 rounded-t-2xl">
-<div class="flex justify-between items-center">
-<div class="flex items-center gap-3">
-<div class="bg-white bg-opacity-20 p-2 rounded-lg">
-<svg class="w-6 h-6" fill="currentColor" viewbox="0 0 24 24">
-<path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"></path>
-</svg>
-</div>
-<h2 class="text-2xl font-bold">إضافة نموذج جديد</h2>
-</div>
-<button class="text-white hover:text-gray-200 text-3xl font-light transition-colors" onclick="closeAddFormModal()">×</button>
-</div>
-</div>
-<form class="p-8 space-y-6" id="newFormTemplate">
-<div class="grid md:grid-cols-2 gap-6">
-<div>
-<label class="block text-gray-700 font-bold mb-3">اسم النموذج</label>
-<input class="w-full p-4 border border-gray-300 rounded-lg focus:border-primary focus:outline-none transition-colors" id="newFormName" required="" type="text"/>
-</div>
-<div>
-<label class="block text-gray-700 font-bold mb-3">لون النموذج</label>
-<select class="w-full p-4 border border-gray-300 rounded-lg focus:border-primary focus:outline-none transition-colors" id="newFormColor" required="">
-<option value="">اختر اللون</option>
-<option value="primary">أخضر داكن (الأساسي)</option>
-<option value="secondary">ذهبي (الثانوي)</option>
-<option value="blue">أزرق</option>
-<option value="red">أحمر</option>
-<option value="purple">بنفسجي</option>
-<option value="indigo">نيلي</option>
-</select>
-</div>
-</div>
-<div class="grid md:grid-cols-2 gap-6">
-<div>
-<label class="block text-gray-700 font-bold mb-3">وصف النموذج</label>
-<textarea class="w-full p-4 border border-gray-300 rounded-lg focus:border-primary focus:outline-none transition-colors" id="newFormDescription" required="" rows="4"></textarea>
-</div>
-<div>
-<label class="block text-gray-700 font-bold mb-3">الجهة المرسل إليها (الإيميل الرئيسي)</label>
-<input class="w-full p-4 border border-gray-300 rounded-lg focus:border-primary focus:outline-none transition-colors" id="newFormRecipient" placeholder="example@nauss.edu.sa" required="" type="email"/>
-</div>
-</div>
-<div>
-<label class="block text-gray-700 font-bold mb-3">موضوع الإيميل</label>
-<input class="w-full p-4 border border-gray-300 rounded-lg focus:border-primary focus:outline-none transition-colors" id="newFormSubject" required="" type="text"/>
-</div>
-<div>
-<label class="block text-gray-700 font-bold mb-3">محتوى الإيميل</label>
-<textarea class="w-full p-4 border border-gray-300 rounded-lg focus:border-primary focus:outline-none transition-colors" id="newFormContent" placeholder="اكتب محتوى الإيميل هنا..." required="" rows="5"></textarea>
-</div>
-<div>
-<label class="block text-gray-700 font-bold mb-3">التعليمات</label>
-<textarea class="w-full p-4 border border-gray-300 rounded-lg focus:border-primary focus:outline-none transition-colors" id="newFormInstructions" placeholder="• النقطة الأولى
-• النقطة الثانية
-• النقطة الثالثة" required="" rows="4"></textarea>
-</div>
-<!-- Custom Fields Section -->
-<div class="border-t pt-6">
-<div class="flex justify-between items-center mb-6">
-<h4 class="text-xl font-bold text-gray-800 flex items-center gap-2">
-<svg class="w-6 h-6 text-primary" fill="currentColor" viewbox="0 0 24 24">
-<path d="M19,3H5C3.9,3 3,3.9 3,5V19C3,20.1 3.9,21 5,21H19C20.1,21 21,20.1 21,19V5C21,3.9 20.1,3 19,3M19,19H5V5H19V19Z"></path>
-</svg>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add New Form Modal -->
+    <div id="addFormModal" class="modal">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-5xl mx-4 max-h-[90vh] overflow-y-auto slide-up">
+            <div class="secondary-gradient text-white p-6 rounded-t-2xl">
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center gap-3">
+                        <div class="bg-white bg-opacity-20 p-2 rounded-lg">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"/>
+                            </svg>
+                        </div>
+                        <h2 class="text-2xl font-bold">إضافة نموذج جديد</h2>
+                    </div>
+                    <button onclick="closeAddFormModal()" class="text-white hover:text-gray-200 text-3xl font-light transition-colors">×</button>
+                </div>
+            </div>
+            
+            <form id="newFormTemplate" class="p-8 space-y-6">
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-gray-700 font-bold mb-3">اسم النموذج</label>
+                        <input type="text" id="newFormName" class="w-full p-4 border border-gray-300 rounded-lg focus:border-primary focus:outline-none transition-colors" required>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-bold mb-3">لون النموذج</label>
+                        <select id="newFormColor" class="w-full p-4 border border-gray-300 rounded-lg focus:border-primary focus:outline-none transition-colors" required>
+                            <option value="">اختر اللون</option>
+                            <option value="primary">أخضر داكن (الأساسي)</option>
+                            <option value="secondary">ذهبي (الثانوي)</option>
+                            <option value="blue">أزرق</option>
+                            <option value="red">أحمر</option>
+                            <option value="purple">بنفسجي</option>
+                            <option value="indigo">نيلي</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-gray-700 font-bold mb-3">وصف النموذج</label>
+                        <textarea id="newFormDescription" rows="4" class="w-full p-4 border border-gray-300 rounded-lg focus:border-primary focus:outline-none transition-colors" required></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-bold mb-3">الجهة المرسل إليها (الإيميل الرئيسي)</label>
+                        <input type="email" id="newFormRecipient" class="w-full p-4 border border-gray-300 rounded-lg focus:border-primary focus:outline-none transition-colors" placeholder="example@nauss.edu.sa" required>
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-gray-700 font-bold mb-3">موضوع الإيميل</label>
+                    <input type="text" id="newFormSubject" class="w-full p-4 border border-gray-300 rounded-lg focus:border-primary focus:outline-none transition-colors" required>
+                </div>
+                
+                <div>
+                    <label class="block text-gray-700 font-bold mb-3">محتوى الإيميل</label>
+                    <textarea id="newFormContent" rows="5" class="w-full p-4 border border-gray-300 rounded-lg focus:border-primary focus:outline-none transition-colors" placeholder="اكتب محتوى الإيميل هنا..." required></textarea>
+                </div>
+                
+                <div>
+                    <label class="block text-gray-700 font-bold mb-3">التعليمات</label>
+                    <textarea id="newFormInstructions" rows="4" class="w-full p-4 border border-gray-300 rounded-lg focus:border-primary focus:outline-none transition-colors" placeholder="• النقطة الأولى&#10;• النقطة الثانية&#10;• النقطة الثالثة" required></textarea>
+                </div>
+                
+                <!-- Custom Fields Section -->
+                <div class="border-t pt-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h4 class="text-xl font-bold text-gray-800 flex items-center gap-2">
+                            <svg class="w-6 h-6 text-primary" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M19,3H5C3.9,3 3,3.9 3,5V19C3,20.1 3.9,21 5,21H19C20.1,21 21,20.1 21,19V5C21,3.9 20.1,3 19,3M19,19H5V5H19V19Z"/>
+                            </svg>
                             حقول النموذج المخصصة
                         </h4>
-<button class="bg-primary hover:bg-primary-dark text-white px-6 py-3 rounded-lg font-medium transition-all duration-300 flex items-center gap-2" onclick="addCustomField()" type="button">
-<svg class="w-5 h-5" fill="currentColor" viewbox="0 0 24 24">
-<path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"></path>
-</svg>
+                        <button type="button" onclick="addCustomField()" class="bg-primary hover:bg-primary-dark text-white px-6 py-3 rounded-lg font-medium transition-all duration-300 flex items-center gap-2">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"/>
+                            </svg>
                             إضافة حقل
                         </button>
-</div>
-<div class="space-y-4" id="customFieldsContainer">
-<!-- Default fields will be added here -->
-</div>
-</div>
-<div class="flex gap-4 pt-6">
-<button class="flex-1 secondary-gradient hover:bg-secondary-light text-white font-bold py-4 px-8 rounded-xl transition-all duration-300 flex items-center justify-center gap-3 shadow-lg hover:shadow-xl" type="submit">
-<svg class="w-6 h-6" fill="currentColor" viewbox="0 0 24 24">
-<path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"></path>
-</svg>
+                    </div>
+                    <div id="customFieldsContainer" class="space-y-4">
+                        <!-- Default fields will be added here -->
+                    </div>
+                </div>
+                
+                <div class="flex gap-4 pt-6">
+                    <button type="submit" class="flex-1 secondary-gradient hover:bg-secondary-light text-white font-bold py-4 px-8 rounded-xl transition-all duration-300 flex items-center justify-center gap-3 shadow-lg hover:shadow-xl">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"/>
+                        </svg>
                         إضافة النموذج
                     </button>
-<button class="px-8 py-4 border-2 border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-all duration-300 font-medium" onclick="closeAddFormModal()" type="button">
+                    <button type="button" onclick="closeAddFormModal()" class="px-8 py-4 border-2 border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-all duration-300 font-medium">
                         إلغاء
                     </button>
-</div>
-</form>
-</div>
-</div>
-<!-- Email Preview Modal -->
-<div class="modal" id="emailModal">
-<div class="bg-white rounded-2xl shadow-2xl w-full max-w-5xl mx-4 max-h-[90vh] overflow-y-auto slide-up">
-<div class="gradient-bg text-white p-6 rounded-t-2xl">
-<div class="flex justify-between items-center">
-<div class="flex items-center gap-3">
-<div class="bg-white bg-opacity-20 p-2 rounded-lg">
-<svg class="w-6 h-6" fill="currentColor" viewbox="0 0 24 24">
-<path d="M20,8L12,13L4,8V6L12,11L20,6M20,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6C22,4.89 21.11,4 20,4Z"></path>
-</svg>
-</div>
-<h2 class="text-2xl font-bold">معاينة الإيميل</h2>
-</div>
-<button class="text-white hover:text-gray-200 text-3xl font-light transition-colors" onclick="closeEmailPreview()">×</button>
-</div>
-</div>
-<div class="p-8">
-<div class="bg-gray-50 p-8 rounded-xl mb-8 text-right border-2 border-gray-200" id="emailContent" style="font-family: 'Cairo', sans-serif; line-height: 1.8;">
-<!-- Email content will be generated here -->
-</div>
-<div class="flex gap-4">
-<button class="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-8 rounded-xl transition-all duration-300 flex items-center justify-center gap-3 shadow-lg hover:shadow-xl" onclick="sendEmail()">
-<svg class="w-6 h-6" fill="currentColor" viewbox="0 0 24 24">
-<path d="M2,21L23,12L2,3V10L17,12L2,14V21Z"></path>
-</svg>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Email Preview Modal -->
+    <div id="emailModal" class="modal">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-5xl mx-4 max-h-[90vh] overflow-y-auto slide-up">
+            <div class="gradient-bg text-white p-6 rounded-t-2xl">
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center gap-3">
+                        <div class="bg-white bg-opacity-20 p-2 rounded-lg">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M20,8L12,13L4,8V6L12,11L20,6M20,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6C22,4.89 21.11,4 20,4Z"/>
+                            </svg>
+                        </div>
+                        <h2 class="text-2xl font-bold">معاينة الإيميل</h2>
+                    </div>
+                    <button onclick="closeEmailPreview()" class="text-white hover:text-gray-200 text-3xl font-light transition-colors">×</button>
+                </div>
+            </div>
+            
+            <div class="p-8">
+                <div id="emailContent" class="bg-gray-50 p-8 rounded-xl mb-8 text-right border-2 border-gray-200" style="font-family: 'Cairo', sans-serif; line-height: 1.8;">
+                    <!-- Email content will be generated here -->
+                </div>
+                
+                <div class="flex gap-4">
+                    <button onclick="sendEmail()" class="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-8 rounded-xl transition-all duration-300 flex items-center justify-center gap-3 shadow-lg hover:shadow-xl">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M2,21L23,12L2,3V10L17,12L2,14V21Z"/>
+                        </svg>
                         إرسال الإيميل
                     </button>
-<button class="px-8 py-4 border-2 border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-all duration-300 font-medium" onclick="closeEmailPreview()">
+                    <button onclick="closeEmailPreview()" class="px-8 py-4 border-2 border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-all duration-300 font-medium">
                         تعديل البيانات
                     </button>
-</div>
-</div>
-</div>
-</div>
-<script>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
         let currentFormType = '';
         let sentForms = JSON.parse(localStorage.getItem('sentForms')) || [];
         let customForms = JSON.parse(localStorage.getItem('customForms')) || [];
@@ -1638,18 +1672,5 @@
             }
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'962c281190279031',t:'MTc1MzExNjE5OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
-<section id="contact">
-<h2>تواصل معنا</h2>
-<form action="https://formspree.io/f/mdkdarrq" method="POST">
-<label for="name">الاسم:</label>
-<input id="name" name="name" required="" type="text"/><br/>
-<label for="email">البريد الإلكتروني:</label>
-<input id="email" name="email" required="" type="email"/><br/>
-<label for="message">الرسالة:</label>
-<textarea id="message" name="message" required=""></textarea><br/>
-<button type="submit">إرسال</button>
-</form>
-</section>
-</body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'962c281190279031',t:'MTc1MzExNjE5OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
